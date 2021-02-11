@@ -1,0 +1,56 @@
+﻿@model Shop.Data.ViewModels.Account.SendEmailViewModel
+
+@{
+    ViewData["Title"] = "ارسال لینک فعالسازی";
+    Layout = "~/Views/Shared/_AccountLayout.cshtml";
+}
+
+<div class="wrap-account-pic col-lg-6 col-md-6 hidden-sm hidden-xs" style="background-image: url(/images/site/Register.png)"></div>
+
+<div class="account-form col-lg-6 col-md-6 col-sm-12 col-xs-12">
+    <span class="account-form-title">
+        ارسال لینک فعالسازی
+    </span>
+
+    @{
+        if (ViewBag.SuccessResendEmail != null && ViewBag.SuccessResendEmail == 1)
+        {
+            <div class="alert alert-success text-center">
+                <h5 class="text-center">
+                    <span>لینک فعالسازی مجددا برای ایمیل شما ارسال شد</span>
+                    <br />
+                    <span>برای تکمیل فرایند ثبت نام، روی لینک ارسال شده به ایمیلتان کلیک کنید</span>
+                </h5>
+            </div>
+        }
+        else if (ViewBag.SuccessResendEmail != null && ViewBag.SuccessResendEmail == -1)
+        {
+            <div class="alert alert-warning text-center">
+                <h5 class="text-center">
+                    <span>توجه!</span>
+                    <br />
+                    <span>حساب کاربری شما قبلا فعال شده است</span>
+                </h5>
+            </div>
+        }
+    }
+
+    <form asp-action="ResendEmail" method="post">
+        <div class="wrap-input-account">
+            <input asp-for="Email" class="form-control" placeholder="ایمیل" />
+            <span class="focus-account"></span>
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="container-button">
+            <button type="submit" class="account-button">
+                ثبت درخواست
+            </button>
+        </div>
+    </form>
+    <br />
+    <a href="/Login" class="btn btn-block btn-xs btn-primary">ورود به حساب کاربری</a>
+    <br />
+    <a href="/" class="btn btn-block btn-xs btn-primary">بازگشت به صفحه اصلی</a>
+</div>
+

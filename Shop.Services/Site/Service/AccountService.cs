@@ -25,6 +25,41 @@ namespace Shop.Services.Site.Service
             _signInManager = signInManager;
         }
 
+        public async Task<bool> ActivateEmail(string userName, string token)
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+            if (user != null)
+            {
+                var result = await _userManager.ConfirmEmailAsync(user, token);
+                if (result.Succeeded)
+                {
+                    user.IsActive = true;
+                    _db.UserRepository.Update(user);
+                    await _db.SaveAsync();
+
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public async Task<string> GetActivateEmailToken(User user)
+        {
+            return await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        }
+
+        public async Task<string> GetChangePasswordToken(User user)
+        {
+            return await _userManager.GeneratePasswordResetTokenAsync(user);
+        }
+
         public async Task<AccountReturnMessage> Login(LoginViewModel viewModel)
         {
             var result = await _signInManager.PasswordSignInAsync(viewModel.Email, viewModel.Password, viewModel.RememberMe, true);
@@ -74,6 +109,29 @@ namespace Shop.Services.Site.Service
                     errors.Add(error.Description.ToString());
                 }
                 return new AccountReturnMessage(false, null, errors);
+            }
+        }
+
+        public async Task<string> ResetPassword(string userName, string token)
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+            if (user != null)
+            {
+                Random r = new Random();
+                string newPassword = r.Next(1000, 10000).ToString();
+                var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
+                if (result.Succeeded)
+                {
+                    return newPassword;
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            }
+            else
+            {
+                return string.Empty;
             }
         }
     }

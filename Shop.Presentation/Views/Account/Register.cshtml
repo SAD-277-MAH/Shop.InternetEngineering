@@ -12,6 +12,17 @@
         فرم عضویت
     </span>
 
+    @if (ViewBag.SuccessRegister != null && ViewBag.SuccessRegister)
+    {
+        <div class="alert alert-success text-center">
+            <h5 class="text-center">
+                <span>ثبت نام شما با موفقیت انجام شد</span>
+                <br />
+                <span>برای تکمیل فرایند ثبت نام، روی لینک ارسال شده به ایمیلتان کلیک کنید</span>
+            </h5>
+        </div>
+    }
+
     <form asp-action="Register" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="wrap-input-account">
@@ -45,7 +56,7 @@
         </div>
     </form>
     <br />
-    <a href="#" class="btn btn-block btn-xs btn-primary">قبلا ثبت نام کرده ام</a>
+    <a href="/Login" class="btn btn-block btn-xs btn-primary">قبلا ثبت نام کرده ام</a>
     <br />
-    <a href="#" class="btn btn-block btn-xs btn-primary">بازگشت به صفحه اصلی</a>
+    <a href="/" class="btn btn-block btn-xs btn-primary">بازگشت به صفحه اصلی</a>
 </div>

@@ -1,7 +1,7 @@
 ﻿@model Shop.Data.ViewModels.Account.LoginViewModel
 
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "ورود";
     Layout = "~/Views/Shared/_AccountLayout.cshtml";
 }
 
@@ -33,9 +33,11 @@
         </div>
     </form>
     <br />
-    <a href="#" class="btn btn-block btn-xs btn-primary">فراموشی کلمه عبور</a>
+    <a href="/Account/ForgetPassword" class="btn btn-block btn-xs btn-primary">فراموشی کلمه عبور</a>
     <br />
-    <a href="#" class="btn btn-block btn-xs btn-primary">حساب کاربری ندارم</a>
+    <a href="/Account/ResendEmail" class="btn btn-block btn-xs btn-primary">ارسال مجدد لینک فعالسازی</a>
     <br />
-    <a href="#" class="btn btn-block btn-xs btn-primary">بازگشت به صفحه اصلی</a>
+    <a href="/Register" class="btn btn-block btn-xs btn-primary">حساب کاربری ندارم</a>
+    <br />
+    <a href="/" class="btn btn-block btn-xs btn-primary">بازگشت به صفحه اصلی</a>
 </div>

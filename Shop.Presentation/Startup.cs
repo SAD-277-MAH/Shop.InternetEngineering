@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Shop.Common.Extentions;
+using Shop.Common.Helpers.Interface;
+using Shop.Common.Helpers.Service;
 using Shop.Data.Context;
 using Shop.Data.Models;
 using Shop.Repo.Infrastructure;
@@ -40,11 +42,8 @@ namespace Shop.Presentation
             {
                 option.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
                 option.AddPolicy("RequireUserRole", policy => policy.RequireRole("User"));
-                option.AddPolicy("RequireBloggerAdminRole", policy => policy.RequireRole("BloggerAdmin"));
-                option.AddPolicy("RequireBloggerRole", policy => policy.RequireRole("Blogger"));
-                option.AddPolicy("RequireAccountantRole", policy => policy.RequireRole("Accountant"));
 
-                option.AddPolicy("Access", policy => policy.RequireRole("Admin", "User", "BloggerAdmin", "Blogger", "Accountant"));
+                option.AddPolicy("Access", policy => policy.RequireRole("Admin", "User"));
             });
 
             services.AddDbContext<DatabaseContext>(options =>
@@ -71,8 +70,11 @@ namespace Shop.Presentation
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
 
+            services.AddTransient<IViewRenderService, ViewRenderService>();
+
             services.AddScoped<IUnitOfWork<DatabaseContext>, UnitOfWork<DatabaseContext>>();
             services.AddTransient<SeedService>();
+            services.AddTransient<IMessageSender, MessageSender>();
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IUserService, UserService>();
         }
