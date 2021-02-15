@@ -1,0 +1,124 @@
+﻿@using Shop.Services.Scopes
+@using Shop.Data.ViewModels.Admin
+
+@inject AdminLayoutScope scope
+
+@{
+    UserDetailViewModel user = await scope.GetUserDetail(User.Identity.Name);
+}
+
+
+<!DOCTYPE html>
+
+<html lang="fa">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>پنل مدیریت | @ViewData["Title"]</title>
+
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/fontawesome/dist/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/css/admin.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="page-wrapper chiller-theme toggled">
+        <a href="#" id="show-sidebar" class="btn btn-sm sidebarToggle">
+            <i class="fa fa-bars"></i>
+        </a>
+
+        <nav id="sidebar" class="sidebar-wrapper">
+            <div class="sidebar-content">
+                <div class="sidebar-brand">
+                    <a href="#">فروشگاه اینترنتی</a>
+
+                    <div id="close-sidebar">
+                        <i class="fa fa-times"></i>
+                    </div>
+                </div>
+
+                <div class="sidebar-header">
+                    <div class="user-info">
+                        <span class="user-name">@user.FullName</span>
+
+                        <span class="user-role">@user.RoleName</span>
+
+                        <span class="user-status">
+                            <i class="fa fa-circle"></i>
+                            <span>آنلاین</span>
+                        </span>
+                    </div>
+
+                    <div class="user-pic">
+                        <img src="~/images/site/logo.png" alt="فروشگاه اینترنتی" class="img-responsive" width="80" height="80" />
+                    </div>
+                </div>
+
+                <div class="sidebar-menu">
+                    <ul>
+                        <li class="sidebar-dropdown">
+                            <a href="/Admin">
+                                <span class="pull-right">داشبورد</span>
+
+                                <span class="item-icon pull-left fa fa-desktop"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-menu">
+                    <ul>
+                        <li class="sidebar-dropdown">
+                            <a href="#">
+                                <span class="pull-right">تنظیمات</span>
+
+                                <span class="item-icon pull-left fa fa-cogs"></span>
+                            </a>
+
+                            <div class="sidebar-submenu">
+                                <ul>
+                                    <li>
+                                        <a href="/Admin/Setting/Site">تنظیمات فروشگاه</a>
+                                    </li>
+                                    <li>
+                                        <a href="/Admin/Setting/MessageSender">تنظیمات ارسال پیام</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                @*<div class="sidebar-footer">
+            <a href="#">
+                <i class="fa fa-bell"></i>
+                <span class="badge badge-pill badge-warning notification">2</span>
+            </a>
+
+            <a href="#">
+                <i class="fa fa-envelope"></i>
+                <span class="badge badge-pill badge-warning notification">7</span>
+            </a>
+
+            <a href="#">
+                <i class="fa fa-cog"></i>
+                <span class="badge badge-pill badge-warning notification">7</span>
+            </a>
+
+            <a href="/Account/Logout">
+                <i class="fa fa-power-off"></i>
+            </a>
+        </div>*@
+            </div>
+        </nav>
+    </div>
+
+    <div class="row align-self-center justify-content-center">
+        @RenderBody()
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/admin.js"></script>
+    @RenderSection("script", false)
+</body>
+</html>

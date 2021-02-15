@@ -17,13 +17,15 @@ namespace Shop.Presentation.Controllers
     {
         private readonly IUnitOfWork<DatabaseContext> _db;
         private readonly IAccountService _accountService;
+        private readonly SignInManager<User> _signInManager;
         private readonly IMessageSender _messageSender;
         private readonly IViewRenderService _viewRenderService;
 
-        public AccountController(IUnitOfWork<DatabaseContext> db, IAccountService accountService, IMessageSender messageSender, IViewRenderService viewRenderService)
+        public AccountController(IUnitOfWork<DatabaseContext> db, IAccountService accountService, SignInManager<User> signInManager, IMessageSender messageSender, IViewRenderService viewRenderService)
         {
             _db = db;
             _accountService = accountService;
+            _signInManager = signInManager;
             _messageSender = messageSender;
             _viewRenderService = viewRenderService;
         }
@@ -271,6 +273,15 @@ namespace Shop.Presentation.Controllers
             {
                 return NotFound();
             }
+        }
+        #endregion
+
+        #region Logout
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return Redirect("/");
         }
         #endregion
     }

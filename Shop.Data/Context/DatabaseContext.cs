@@ -23,5 +23,7 @@ namespace Shop.Data.Context
         {
             optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=Shop.InternetEngineering_DB;Integrated Security=true;MultipleActiveResultSets=true;");
         }
+
+        public DbSet<Setting> Settings { get; set; }
     }
 }

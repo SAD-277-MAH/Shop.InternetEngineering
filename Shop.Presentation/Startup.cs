@@ -13,6 +13,7 @@ using Shop.Common.Helpers.Service;
 using Shop.Data.Context;
 using Shop.Data.Models;
 using Shop.Repo.Infrastructure;
+using Shop.Services.Scopes;
 using Shop.Services.Seed.Service;
 using Shop.Services.Site.Interface;
 using Shop.Services.Site.Service;
@@ -51,7 +52,8 @@ namespace Shop.Presentation
                 options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"));
             });
 
-            services.AddIdentity<User, Role>(options => {
+            services.AddIdentity<User, Role>(options =>
+            {
                 options.Password.RequireDigit = false;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireLowercase = false;
@@ -77,6 +79,8 @@ namespace Shop.Presentation
             services.AddTransient<IMessageSender, MessageSender>();
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IUserService, UserService>();
+
+            services.AddScoped<AdminLayoutScope>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -87,8 +91,12 @@ namespace Shop.Presentation
                 app.UseDeveloperExceptionPage();
             }
 
+            #region Seed Data
             seeder.SeedRoles();
             seeder.SeedUsers();
+            seeder.SeedSetting();
+            #endregion
+
 
             app.UseStaticFiles();
 
@@ -97,7 +105,19 @@ namespace Shop.Presentation
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseMvcWithDefaultRoute();
+            // app.UseMvcWithDefaultRoute();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                  name: "Default",
+                  template: "{controller=Home}/{action=Index}/{id?}"
+                );
+
+                routes.MapRoute(
+                  name: "areas",
+                  template: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}"
+                );
+            });
 
             app.UseEndpoints(endpoints =>
             {

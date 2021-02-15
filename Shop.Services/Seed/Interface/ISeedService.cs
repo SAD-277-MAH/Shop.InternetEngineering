@@ -8,5 +8,6 @@ namespace Shop.Services.Seed.Interface
     {
         void SeedRoles();
         void SeedUsers();
+        void SeedSetting();
     }
 }

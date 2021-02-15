@@ -12,6 +12,7 @@ namespace Shop.Repo.Infrastructure
     {
         IUserRepository UserRepository { get; }
         IRoleRepository RoleRepository { get; }
+        ISettingRepository SettingRepository { get; }
 
         bool Save();
         Task<bool> SaveAsync();

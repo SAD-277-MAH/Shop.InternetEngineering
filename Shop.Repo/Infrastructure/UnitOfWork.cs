@@ -47,6 +47,19 @@ namespace Shop.Repo.Infrastructure
                 return roleRepository;
             }
         }
+
+        private ISettingRepository settingRepository;
+        public ISettingRepository SettingRepository
+        {
+            get
+            {
+                if (settingRepository == null)
+                {
+                    settingRepository = new SettingRepository(_db);
+                }
+                return settingRepository;
+            }
+        }
         #endregion
 
         #region Save

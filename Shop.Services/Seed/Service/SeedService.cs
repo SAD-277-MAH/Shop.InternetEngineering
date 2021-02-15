@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Shop.Data.Context;
 using Shop.Data.Models;
+using Shop.Repo.Infrastructure;
 using Shop.Services.Seed.Interface;
 using Shop.Services.Site.Interface;
 using System;
@@ -11,12 +13,14 @@ namespace Shop.Services.Seed.Service
 {
     public class SeedService : ISeedService
     {
+        private readonly IUnitOfWork<DatabaseContext> _db;
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<Role> _roleManager;
         private readonly IUserService _userService;
 
-        public SeedService(UserManager<User> userManager, RoleManager<Role> roleManager, IUserService userService)
+        public SeedService(IUnitOfWork<DatabaseContext> db, UserManager<User> userManager, RoleManager<Role> roleManager, IUserService userService)
         {
+            _db = db;
             _userManager = userManager;
             _roleManager = roleManager;
             _userService = userService;
@@ -36,6 +40,16 @@ namespace Shop.Services.Seed.Service
                 {
                     _roleManager.CreateAsync(role).Wait();
                 }
+            }
+        }
+
+        public void SeedSetting()
+        {
+            if (!_db.SettingRepository.Get().Any())
+            {
+                var setting = new Setting();
+                _db.SettingRepository.Add(setting);
+                _db.Save();
             }
         }
 
