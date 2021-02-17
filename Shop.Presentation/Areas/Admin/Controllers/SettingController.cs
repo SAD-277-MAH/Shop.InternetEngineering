@@ -45,13 +45,19 @@ namespace Shop.Presentation.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Site(SiteSettingViewModel viewModel)
         {
-            var setting = (await _db.SettingRepository.GetAsync()).LastOrDefault();
-            _mapper.Map(viewModel, setting);
-            _db.SettingRepository.Update(setting);
-            await _db.SaveAsync();
+            if (ModelState.IsValid)
+            {
+                var setting = (await _db.SettingRepository.GetAsync()).LastOrDefault();
+                _mapper.Map(viewModel, setting);
+                _db.SettingRepository.Update(setting);
+                await _db.SaveAsync();
 
-            ViewBag.ChangeSuccess = true;
-            return View(viewModel);
+                ViewBag.ChangeSuccess = true;
+                return View(viewModel);
+            }
+
+            ViewBag.ChangeSuccess = false;
+            return View();
         }
         #endregion
 
@@ -76,13 +82,19 @@ namespace Shop.Presentation.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> MessageSender(MessageSenderSettingViewModel viewModel)
         {
-            var setting = (await _db.SettingRepository.GetAsync()).LastOrDefault();
-            _mapper.Map(viewModel, setting);
-            _db.SettingRepository.Update(setting);
-            await _db.SaveAsync();
+            if (ModelState.IsValid)
+            {
+                var setting = (await _db.SettingRepository.GetAsync()).LastOrDefault();
+                _mapper.Map(viewModel, setting);
+                _db.SettingRepository.Update(setting);
+                await _db.SaveAsync();
 
-            ViewBag.ChangeSuccess = true;
-            return View(viewModel);
+                ViewBag.ChangeSuccess = true;
+                return View(viewModel);
+            }
+
+            ViewBag.ChangeSuccess = false;
+            return View();
         }
         #endregion
     }

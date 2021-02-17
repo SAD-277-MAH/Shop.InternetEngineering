@@ -50,6 +50,7 @@
 
 body {
     direction: rtl;
+    text-align: right;
     font-size: 14px;
     background-color: whitesmoke;
     font-family: 'B Yekan', Tahoma;
@@ -526,8 +527,11 @@ body {
     margin-top: 30px;
 }
 
-/*Search Input*/
+.margin-top-50 {
+    margin-top: 50px;
+}
 
+/*Search Input*/
 #myInput {
     width: 100%;
     font-size: 16px;
@@ -644,4 +648,13 @@ input.tag-input {
     20%, 40%, 60%, 80% {
         transform: translate3d(5px, 0, 0);
     }
+}
+
+/*-----------------------------------------------------------------*/
+.pull-left {
+    float: left;
+}
+
+.pull-right {
+    float: right;
 }

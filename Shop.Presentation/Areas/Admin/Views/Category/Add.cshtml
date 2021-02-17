@@ -1,0 +1,22 @@
+﻿@model Shop.Data.ViewModels.Admin.CategoryViewModel
+
+@{
+    Layout = null;
+}
+
+<h4 class="text-center">ثبت دسته بندی جدید</h4>
+<hr />
+<form action="/Admin/Category/Add" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger validation-error"></div>
+    <div class="form-group">
+        <input asp-for="Name" class="form-control" placeholder="نام دسته بندی" />
+        <span asp-validation-for="Name" class="text-danger validation-error"></span>
+    </div>
+    <div class="form-group">
+        <input asp-for="Icon" class="form-control" placeholder="آیکون" />
+        <span asp-validation-for="Icon" class="text-danger validation-error"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="ثبت" class="btn btn-success btn-block" />
+    </div>
+</form>

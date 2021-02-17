@@ -16,6 +16,9 @@ namespace Shop.Common.Extentions
 
             CreateMap<Setting, MessageSenderSettingViewModel>();
             CreateMap<MessageSenderSettingViewModel, Setting>();
+
+            CreateMap<Category, CategoryViewModel>();
+            CreateMap<CategoryViewModel, Category>();
         }
     }
 }

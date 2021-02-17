@@ -1,0 +1,15 @@
+﻿@{
+    Layout = null;
+}
+
+<h4 class="text-center">حذف دسته بندی</h4>
+<hr />
+<form action="/Admin/Category/Delete/@ViewContext.RouteData.Values["id"]" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger validation-error"></div>
+    <div class="form-group">
+        <h4>از حذف دسته بندی مورد نظر اطمینان دارید؟</h4>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="حذف" class="btn btn-success btn-block" />
+    </div>
+</form>

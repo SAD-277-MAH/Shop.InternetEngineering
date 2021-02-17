@@ -60,6 +60,19 @@ namespace Shop.Repo.Infrastructure
                 return settingRepository;
             }
         }
+
+        private ICategoryRepository categoryRepository;
+        public ICategoryRepository CategoryRepository
+        {
+            get
+            {
+                if (categoryRepository == null)
+                {
+                    categoryRepository = new CategoryRepository(_db);
+                }
+                return categoryRepository;
+            }
+        }
         #endregion
 
         #region Save
