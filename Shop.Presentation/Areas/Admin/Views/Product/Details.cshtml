@@ -1,0 +1,87 @@
+﻿@model Shop.Data.Models.Product
+
+@{
+    ViewData["Title"] = "جزئیات محصول";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="col-lg-10 col-md-10 col-sm-10 col-10">
+    <div class="margin-bottom-50 product-header">
+        <h3 class="pull-right">
+            <span>مشاهده جزئیات محصول [@Model.Name]</span>
+        </h3>
+
+        <h class="pull-left">
+            <a href="/Admin/Product" class="btn btn-primary">بازگشت</a>
+        </h>
+    </div>
+
+    <hr />
+
+    <div class="row justify-content-between margin-top-10">
+        <div class="col-lg-7 col-md-7 col-sm-12 col-12">
+            <div class="product-detail row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                    <h4>@Html.DisplayNameFor(model => model.Name)</h4>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                    <p class="product-detail-text">@Html.DisplayFor(model => model.Name)</p>
+                </div>
+            </div>
+            <div class="product-detail row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                    <h4>@Html.DisplayNameFor(model => model.Description)</h4>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                    <p class="product-detail-text">@Html.DisplayFor(model => model.Description)</p>
+                </div>
+            </div>
+            <div class="product-detail row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                    <h4>@Html.DisplayNameFor(model => model.BrandName)</h4>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                    <p class="product-detail-text">@Html.DisplayFor(model => model.BrandName)</p>
+                </div>
+            </div>
+            <div class="product-detail row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                    <h4>@Html.DisplayNameFor(model => model.Category.Name)</h4>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                    <p class="product-detail-text">@Html.DisplayFor(model => model.Category.Name)</p>
+                </div>
+            </div>
+            <div class="product-detail row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                    <h4>@Html.DisplayNameFor(model => model.Price)</h4>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                    <p class="product-detail-text">@string.Format("{0:#,0}", Model.Price) تومان</p>
+                </div>
+            </div>
+            <div class="product-detail row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                    <h4>@Html.DisplayNameFor(model => model.Discount)</h4>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                    <p class="product-detail-text">@string.Format("{0:#,0}", Model.Discount) تومان</p>
+                </div>
+            </div>
+            <div class="product-detail row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                    <h4>@Html.DisplayNameFor(model => model.Quantity)</h4>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                    <p class="product-detail-text">@Html.DisplayFor(model => model.Quantity)</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+            <div class="image-form-center margin-top-10">
+                <img src="@Model.PhotoUrl.Replace("/wwwroot", "")" class="img-fluid image-fileupload" id="product-image" />
+            </div>
+        </div>
+    </div>
+</div>

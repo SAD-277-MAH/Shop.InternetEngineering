@@ -10,6 +10,8 @@
 
     <hr />
     <form action="/Admin/Setting/Site" method="post">
+        @Html.AntiForgeryToken()
+
         <div asp-validation-summary="ModelOnly" class="text-danger validation-error"></div>
 
         @if (ViewBag.ChangeSuccess != null && ViewBag.ChangeSuccess)

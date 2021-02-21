@@ -43,6 +43,7 @@ namespace Shop.Presentation.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Site(SiteSettingViewModel viewModel)
         {
             if (ModelState.IsValid)
@@ -55,9 +56,11 @@ namespace Shop.Presentation.Areas.Admin.Controllers
                 ViewBag.ChangeSuccess = true;
                 return View(viewModel);
             }
-
-            ViewBag.ChangeSuccess = false;
-            return View();
+            else
+            {
+                ViewBag.ChangeSuccess = false;
+                return View();
+            }
         }
         #endregion
 
@@ -80,6 +83,7 @@ namespace Shop.Presentation.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> MessageSender(MessageSenderSettingViewModel viewModel)
         {
             if (ModelState.IsValid)
@@ -92,9 +96,11 @@ namespace Shop.Presentation.Areas.Admin.Controllers
                 ViewBag.ChangeSuccess = true;
                 return View(viewModel);
             }
-
-            ViewBag.ChangeSuccess = false;
-            return View();
+            else
+            {
+                ViewBag.ChangeSuccess = false;
+                return View();
+            }
         }
         #endregion
     }

@@ -13,6 +13,8 @@
     </span>
 
     <form asp-action="Login" method="post">
+        @Html.AntiForgeryToken()
+
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="wrap-input-account">
             <input asp-for="Email" class="form-control" placeholder="ایمیل" />

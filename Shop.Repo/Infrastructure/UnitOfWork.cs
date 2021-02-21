@@ -1,6 +1,4 @@
-﻿//using Shop.Repo.Repositories.Interface;
-//using Shop.Repo.Repositories.Repo;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Shop.Repo.Repositories.Interface;
 using Shop.Repo.Repositories.Repo;
 using System;
@@ -71,6 +69,19 @@ namespace Shop.Repo.Infrastructure
                     categoryRepository = new CategoryRepository(_db);
                 }
                 return categoryRepository;
+            }
+        }
+
+        private IProductRepository productRepository;
+        public IProductRepository ProductRepository
+        {
+            get
+            {
+                if (productRepository == null)
+                {
+                    productRepository = new ProductRepository(_db);
+                }
+                return productRepository;
             }
         }
         #endregion

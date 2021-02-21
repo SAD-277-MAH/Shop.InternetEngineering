@@ -16,14 +16,12 @@ namespace Shop.Services.Seed.Service
         private readonly IUnitOfWork<DatabaseContext> _db;
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<Role> _roleManager;
-        private readonly IUserService _userService;
 
         public SeedService(IUnitOfWork<DatabaseContext> db, UserManager<User> userManager, RoleManager<Role> roleManager, IUserService userService)
         {
             _db = db;
             _userManager = userManager;
             _roleManager = roleManager;
-            _userService = userService;
         }
 
         public void SeedRoles()

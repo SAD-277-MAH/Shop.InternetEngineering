@@ -40,6 +40,7 @@ namespace Shop.Presentation.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [Route("Register")]
         public async Task<IActionResult> Register(RegisterViewModel viewModel)
         {
@@ -99,6 +100,7 @@ namespace Shop.Presentation.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [Route("Login")]
         public async Task<IActionResult> Login(LoginViewModel viewModel)
         {
@@ -158,6 +160,7 @@ namespace Shop.Presentation.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> ResendEmail(SendEmailViewModel viewModel)
         {
             if (ModelState.IsValid)
@@ -209,6 +212,7 @@ namespace Shop.Presentation.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> ForgetPassword(SendEmailViewModel viewModel)
         {
             if (ModelState.IsValid)
@@ -278,6 +282,7 @@ namespace Shop.Presentation.Controllers
 
         #region Logout
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();

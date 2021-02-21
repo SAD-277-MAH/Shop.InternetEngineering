@@ -7,6 +7,8 @@
 <h4 class="text-center">ویرایش دسته بندی "@Model.Name"</h4>
 <hr />
 <form action="/Admin/Category/Edit/@ViewContext.RouteData.Values["id"]" method="post">
+    @Html.AntiForgeryToken()
+
     <div asp-validation-summary="ModelOnly" class="text-danger validation-error"></div>
     <div class="form-group">
         <input asp-for="Name" class="form-control" placeholder="نام دسته بندی" />

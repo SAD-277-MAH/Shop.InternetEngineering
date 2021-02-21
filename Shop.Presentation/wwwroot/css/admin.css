@@ -650,6 +650,80 @@ input.tag-input {
     }
 }
 
+/*-----------------------------upload-file-------------------------------------------------*/
+
+[type=file] {
+    height: 0;
+    overflow: hidden;
+    width: 0;
+}
+
+    [type=file] + label {
+        background: #f15d22;
+        border: none;
+        border-radius: 5px;
+        color: #fff;
+        cursor: pointer;
+        display: inline-block;
+        font-family: "Rubik", sans-serif;
+        font-size: inherit;
+        font-weight: 500;
+        margin-bottom: 1rem;
+        outline: none;
+        padding: 1rem 50px;
+        position: relative;
+        transition: all 0.3s;
+        vertical-align: middle;
+    }
+
+        [type=file] + label:hover {
+            background-color: #d3460d;
+        }
+
+        [type=file] + label.btn-2 {
+            background-color: #99c793;
+            border-radius: 50px;
+            overflow: hidden;
+            margin: 8px auto;
+        }
+
+            [type=file] + label.btn-2::before {
+                color: #fff;
+                content: "\f382";
+                font-family: "Font Awesome 5 Free";
+                font-size: 20px;
+                height: 100%;
+                right: 130%;
+                line-height: 3.3;
+                position: absolute;
+                top: -5px;
+                left: 10px;
+                transition: all 0.3s;
+                font-weight: 900;
+            }
+
+            [type=file] + label.btn-2:hover {
+                background-color: #497f42;
+            }
+
+                [type=file] + label.btn-2:hover::before {
+                    right: 75%;
+                }
+
+.image-fileupload {
+    background: #999;
+    padding: 5px 5px 5px;
+    border-radius: 20px;
+    color: #fff;
+    width: 100%;
+    /*margin-top: 25px;*/
+    transition: all 0.5s;
+}
+
+    .image-fileupload:hover {
+        -webkit-filter: opacity(0.8);
+        filter: opacity(0.8);
+    }
 /*-----------------------------------------------------------------*/
 .pull-left {
     float: left;
@@ -657,4 +731,36 @@ input.tag-input {
 
 .pull-right {
     float: right;
+}
+
+.margin-bottom-50 {
+    margin-bottom: 50px;
+}
+
+.margin-top-10 {
+    margin-top: 10px;
+}
+
+.product-submit-button {
+    margin: 15px auto 0 auto;
+}
+
+.image-form-center {
+    text-align: center;
+}
+
+.product-detail {
+    margin-top: 10px;
+    border: 2px solid #aaa;
+}
+
+.product-detail-text {
+    font-size: 20px;
+    line-height: 30px;
+}
+
+@media only screen and (max-width: 900px) {
+    .product-header {
+        margin-bottom: 150px !important;
+    }
 }

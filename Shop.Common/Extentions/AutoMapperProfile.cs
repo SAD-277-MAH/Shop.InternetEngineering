@@ -19,6 +19,11 @@ namespace Shop.Common.Extentions
 
             CreateMap<Category, CategoryViewModel>();
             CreateMap<CategoryViewModel, Category>();
+
+            CreateMap<Product, ProductAddViewModel>();
+            CreateMap<Product, ProductEditViewModel>();
+            CreateMap<ProductAddViewModel, Product>();
+            CreateMap<ProductEditViewModel, Product>();
         }
     }
 }

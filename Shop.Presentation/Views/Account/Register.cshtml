@@ -23,38 +23,40 @@
         </div>
     }
 
-    <form asp-action="Register" method="post">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="wrap-input-account">
-            <input asp-for="FullName" class="form-control" placeholder="نام و نام خانوادگی" />
-            <span class="focus-account"></span>
-            <span asp-validation-for="FullName" class="text-danger"></span>
-        </div>
+<form asp-action="Register" method="post">
+    @Html.AntiForgeryToken()
 
-        <div class="wrap-input-account">
-            <input asp-for="Email" class="form-control" placeholder="ایمیل" />
-            <span class="focus-account"></span>
-            <span asp-validation-for="Email" class="text-danger"></span>
-        </div>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="wrap-input-account">
+        <input asp-for="FullName" class="form-control" placeholder="نام و نام خانوادگی" />
+        <span class="focus-account"></span>
+        <span asp-validation-for="FullName" class="text-danger"></span>
+    </div>
 
-        <div class="wrap-input-account">
-            <input asp-for="Password" class="form-control" placeholder="کلمه عبور" />
-            <span class="focus-account"></span>
-            <span asp-validation-for="Password" class="text-danger"></span>
-        </div>
+    <div class="wrap-input-account">
+        <input asp-for="Email" class="form-control" placeholder="ایمیل" />
+        <span class="focus-account"></span>
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
 
-        <div class="wrap-input-account">
-            <input asp-for="ConfirmPassword" class="form-control" placeholder="تأیید کلمه عبور" />
-            <span class="focus-account"></span>
-            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-        </div>
+    <div class="wrap-input-account">
+        <input asp-for="Password" class="form-control" placeholder="کلمه عبور" />
+        <span class="focus-account"></span>
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
 
-        <div class="container-button">
-            <button type="submit" class="account-button">
-                ثبت نام
-            </button>
-        </div>
-    </form>
+    <div class="wrap-input-account">
+        <input asp-for="ConfirmPassword" class="form-control" placeholder="تأیید کلمه عبور" />
+        <span class="focus-account"></span>
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </div>
+
+    <div class="container-button">
+        <button type="submit" class="account-button">
+            ثبت نام
+        </button>
+    </div>
+</form>
     <br />
     <a href="/Login" class="btn btn-block btn-xs btn-primary">قبلا ثبت نام کرده ام</a>
     <br />

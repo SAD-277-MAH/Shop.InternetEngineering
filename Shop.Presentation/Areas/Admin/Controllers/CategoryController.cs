@@ -40,18 +40,31 @@ namespace Shop.Presentation.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(CategoryViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                var category = _mapper.Map<Category>(viewModel);
-                await _db.CategoryRepository.AddAsync(category);
-                await _db.SaveAsync();
+                viewModel.Name = viewModel.Name.Trim();
+                var categoryModel = await _db.CategoryRepository.GetAsync(c => c.Name == viewModel.Name, string.Empty);
+                if (categoryModel == null)
+                {
+                    var category = _mapper.Map<Category>(viewModel);
+                    await _db.CategoryRepository.AddAsync(category);
+                    await _db.SaveAsync();
 
-                return Redirect("/Admin/Category");
+                    return Redirect("/Admin/Category");
+                }
+                else
+                {
+                    ModelState.AddModelError("Name", "دسته بندی با این نام قبلا ثبت شده است");
+                    return View(viewModel);
+                }
             }
-
-            return View(viewModel);
+            else
+            {
+                return View(viewModel);
+            }
         }
         #endregion
 
@@ -70,49 +83,62 @@ namespace Shop.Presentation.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, CategoryViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                var category = await _db.CategoryRepository.GetAsync(id);
-
-                if (category != null)
+                viewModel.Name = viewModel.Name.Trim();
+                var categoryModel = await _db.CategoryRepository.GetAsync(c => c.Name == viewModel.Name && c.Id != id, string.Empty);
+                if (categoryModel == null)
                 {
-                    _mapper.Map<CategoryViewModel, Category>(viewModel, category);
+                    var category = await _db.CategoryRepository.GetAsync(id);
 
-                    _db.CategoryRepository.Update(category);
-                    await _db.SaveAsync();
+                    if (category != null)
+                    {
+                        _mapper.Map(viewModel, category);
 
-                    return Redirect("/Admin/Category");
+                        _db.CategoryRepository.Update(category);
+                        await _db.SaveAsync();
+
+                        return Redirect("/Admin/Category");
+                    }
+                    else
+                    {
+                        return NotFound();
+                    }
                 }
-
-                return NotFound();
+                else
+                {
+                    ModelState.AddModelError("Name", "دسته بندی با این نام قبلا ثبت شده است");
+                    return View(viewModel);
+                }
             }
-
-            return View(viewModel);
+            else
+            {
+                return View(viewModel);
+            }
         }
         #endregion
 
         #region Delete
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id != null)
+            var category = await _db.CategoryRepository.GetAsync(id);
+
+            if (category != null)
             {
-                var category = await _db.CategoryRepository.GetAsync(id);
-
-                if (category != null)
-                {
-                    return View();
-                }
-
+                return View();
+            }
+            else
+            {
                 return NotFound();
             }
-
-            return NotFound();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Delete(int id)
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirm(int id)
         {
             var category = await _db.CategoryRepository.GetAsync(id);
 
@@ -123,8 +149,10 @@ namespace Shop.Presentation.Areas.Admin.Controllers
 
                 return Redirect("/Admin/Category");
             }
-
-            return NotFound();
+            else
+            {
+                return NotFound();
+            }
         }
         #endregion
     }

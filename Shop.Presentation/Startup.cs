@@ -17,6 +17,8 @@ using Shop.Services.Scopes;
 using Shop.Services.Seed.Service;
 using Shop.Services.Site.Interface;
 using Shop.Services.Site.Service;
+using Shop.Services.Upload.Interface;
+using Shop.Services.Upload.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -79,6 +81,8 @@ namespace Shop.Presentation
             services.AddTransient<IMessageSender, MessageSender>();
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddScoped<IUploadService, UploadService>();
+            services.AddScoped<IUtilities, Utilities>();
 
             services.AddScoped<AdminLayoutScope>();
         }
