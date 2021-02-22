@@ -16,9 +16,9 @@
         </h3>
     </div>
 
-    <hr />
+    <div class="row"><hr /></div>
 
-    <form action="/Admin/Product/Add" method="post" enctype="multipart/form-data">
+    <form action="/Admin/Product/Add/@ViewContext.RouteData.Values["id"]" method="post" enctype="multipart/form-data">
         @Html.AntiForgeryToken()
 
         <div asp-validation-summary="ModelOnly" class="text-danger validation-error"></div>

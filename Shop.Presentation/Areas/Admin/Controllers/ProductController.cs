@@ -85,7 +85,7 @@ namespace Shop.Presentation.Areas.Admin.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError("File", "تصویر محصول معتبر نیست");
+                        ModelState.AddModelError("File", "خطا در آپلود تصویر محصول");
                         var categories = await _db.CategoryRepository.GetAsync();
                         ViewData["CategoryId"] = new SelectList(categories, "Id", "Name", viewModel.CategoryId);
                         return View(viewModel);
@@ -93,7 +93,7 @@ namespace Shop.Presentation.Areas.Admin.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("File", "خطا در آپلود تصویر محصول");
+                    ModelState.AddModelError("File", "تصویر محصول معتبر نیست");
                     var categories = await _db.CategoryRepository.GetAsync();
                     ViewData["CategoryId"] = new SelectList(categories, "Id", "Name", viewModel.CategoryId);
                     return View(viewModel);
@@ -228,6 +228,135 @@ namespace Shop.Presentation.Areas.Admin.Controllers
             else
             {
                 return NotFound();
+            }
+        }
+        #endregion
+
+        #region Gallery
+        public IActionResult ProductGallery()
+        {
+            return PartialView();
+        }
+
+        public async Task<IActionResult> Gallery(string id)
+        {
+            var product = await _db.ProductRepository.GetAsync(id);
+
+            if (product != null)
+            {
+                var images = await _db.ProductImageRepository.GetAsync(p => p.ProductId == id, null, "Product");
+                var viewModel = new ProductImageAddViewModel()
+                {
+                    ProductImages = images
+                };
+
+                return View(viewModel);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Gallery(string id, ProductImageAddViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var product = await _db.ProductRepository.GetAsync(id);
+
+                if (product != null)
+                {
+                    if (viewModel.File.IsImage())
+                    {
+                        PersianCalendar pc = new PersianCalendar();
+                        var uploadResult = await _uploadService.UploadFile(viewModel.File, string.Format("{0}://{1}{2}", Request.Scheme, Request.Host.Value, Request.PathBase.Value), "Products\\" + pc.GetYear(DateTime.Now) + "\\" + pc.GetMonth(DateTime.Now) + "\\" + pc.GetDayOfMonth(DateTime.Now));
+
+                        if (uploadResult.Status)
+                        {
+                            var productImage = new ProductImage()
+                            {
+                                PhotoUrl = uploadResult.Url,
+                                ProductId = id
+                            };
+
+                            await _db.ProductImageRepository.AddAsync(productImage);
+                            await _db.SaveAsync();
+
+                            return Redirect("/Admin/Product/Gallery/" + id);
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("File", "خطا در آپلود تصویر محصول");
+                            var images = await _db.ProductImageRepository.GetAsync(p => p.ProductId == id, null, "Product");
+                            viewModel.ProductImages = images;
+                            return View(viewModel);
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("File", "تصویر محصول معتبر نیست");
+                        var images = await _db.ProductImageRepository.GetAsync(p => p.ProductId == id, null, "Product");
+                        viewModel.ProductImages = images;
+                        return View(viewModel);
+                    }
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            else
+            {
+                var images = await _db.ProductImageRepository.GetAsync(p => p.ProductId == id, null, "Product");
+                viewModel.ProductImages = images;
+                return View(viewModel);
+            }
+        }
+
+        public async Task<IActionResult> DeleteImage(string id)
+        {
+            var image = await _db.ProductImageRepository.GetAsync(id);
+
+            if (image != null)
+            {
+                return View();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpPost, ActionName("DeleteImage")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteImageConfirm(string id)
+        {
+            if (ModelState.IsValid)
+            {
+                var image = await _db.ProductImageRepository.GetAsync(id);
+                if (image != null)
+                {
+                    _db.ProductImageRepository.Delete(id);
+                    await _db.SaveAsync();
+
+                    try
+                    {
+                        _uploadService.RemoveFileFromLocal(_utilities.FindLocalPathFromUrl(image.PhotoUrl));
+                    }
+                    catch { }
+
+                    return Redirect("/Admin/Product/Gallery/" + image.ProductId);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            else
+            {
+                return View();
             }
         }
         #endregion

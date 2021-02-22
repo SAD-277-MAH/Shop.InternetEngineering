@@ -47,6 +47,7 @@
                         @Html.DisplayFor(modelItem => item.Category.Name)
                     </td>
                     <td>
+                        <a href="/Admin/Product/Gallery/@item.Id" class="btn-sm btn-primary">گالری تصاویر</a> |
                         <a href="/Admin/Product/Edit/@item.Id" class="btn-sm btn-warning">ویرایش</a> |
                         <a href="#" onclick="Delete('@item.Id')" class="btn-sm btn-danger">حذف</a>
                     </td>

@@ -1,0 +1,76 @@
+﻿@model Shop.Data.ViewModels.Admin.ProductImageAddViewModel
+
+@{
+    ViewData["Title"] = "گالری تصاویر محصول";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="col-lg-10 col-md-10 col-sm-10 col-10">
+    <div class="margin-bottom-50">
+        <h3 class="pull-right">
+            <span>مشاهده گالری تصاویر محصول</span>
+        </h3>
+
+        <h class="pull-left">
+            <a href="/Admin/Product" class="btn btn-primary">بازگشت</a>
+        </h>
+    </div>
+
+    <div class="row"><hr /></div>
+
+    <div class="row justify-content-between margin-top-10">
+        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+            <form action="/Admin/Product/Gallery/@ViewContext.RouteData.Values["id"]" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly" class="text-danger validation-error"></div>
+
+                <div class="form-group image-form-center">
+                    <input asp-for="File" type="file" id="file" onchange="readURL(this);" />
+                    <label for="file" class="btn-2">تصویر محصول</label>
+                    <span asp-validation-for="File" class="text-danger validation-error"></span>
+                    <img src="~/images/site/default2.png" class="img-fluid image-fileupload" id="product-image" />
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12 col-12 product-submit-button">
+                    <div class="form-group">
+                        <input type="submit" value="ثبت" class="btn btn-success btn-block" />
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="row"><hr /></div>
+
+        <div class="col-lg-7 col-md-7 col-sm-12 col-12 row">
+            @await Html.PartialAsync("ProductGallery", Model.ProductImages)
+        </div>
+    </div>
+</div>
+
+@section script {
+    <script>
+        function Delete(id) {
+            $.ajax({
+                url: "/Admin/Product/DeleteImage/" + id,
+                type: "Get",
+                data: {}
+            }).done(function (result) {
+                $('#modalBox').modal('show');
+                $('#modalBody').html(result);
+            });
+        }
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#product-image')
+                        .attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+}

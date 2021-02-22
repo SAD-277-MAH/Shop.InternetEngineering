@@ -84,6 +84,19 @@ namespace Shop.Repo.Infrastructure
                 return productRepository;
             }
         }
+
+        private IProductImageRepository productImageRepository;
+        public IProductImageRepository ProductImageRepository
+        {
+            get
+            {
+                if (productImageRepository == null)
+                {
+                    productImageRepository = new ProductImageRepository(_db);
+                }
+                return productImageRepository;
+            }
+        }
         #endregion
 
         #region Save

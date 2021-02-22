@@ -724,6 +724,21 @@ input.tag-input {
         -webkit-filter: opacity(0.8);
         filter: opacity(0.8);
     }
+
+/*-----------------------------product-images-------------------------------------------------*/
+.card {
+    background-color: #ddd;
+    padding: 5px;
+}
+
+.card-img-top {
+    border: 1px solid #333;
+    border-radius: 5px;
+}
+
+.card-body {
+    margin: 0 auto;
+}
 /*-----------------------------------------------------------------*/
 .pull-left {
     float: left;
@@ -735,6 +750,10 @@ input.tag-input {
 
 .margin-bottom-50 {
     margin-bottom: 50px;
+}
+
+.margin-bottom-30 {
+    margin-bottom: 30px;
 }
 
 .margin-top-10 {
@@ -757,10 +776,4 @@ input.tag-input {
 .product-detail-text {
     font-size: 20px;
     line-height: 30px;
-}
-
-@media only screen and (max-width: 900px) {
-    .product-header {
-        margin-bottom: 150px !important;
-    }
 }
