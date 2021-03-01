@@ -78,8 +78,10 @@ namespace Shop.Presentation.Areas.Admin.Controllers
                 var categoryViewModel = _mapper.Map<CategoryViewModel>(category);
                 return View(categoryViewModel);
             }
-
-            return NotFound();
+            else
+            {
+                return NotFound();
+            }
         }
 
         [HttpPost]

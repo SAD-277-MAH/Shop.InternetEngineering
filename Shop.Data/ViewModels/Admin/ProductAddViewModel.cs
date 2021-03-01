@@ -29,14 +29,14 @@ namespace Shop.Data.ViewModels.Admin
 
         [Display(Name = "قیمت")]
         [Required(ErrorMessage = "مقدار {0} را وارد کنید")]
-        public int Price { get; set; }
+        public int Price { get; set; } = 0;
 
         [Display(Name = "تخفیف")]
-        public int Discount { get; set; }
+        public int Discount { get; set; } = 0;
 
         [Display(Name = "تعداد")]
         [Required(ErrorMessage = "مقدار {0} را وارد کنید")]
-        public int Quantity { get; set; }
+        public int Quantity { get; set; } = 0;
 
         [Required]
         public int CategoryId { get; set; }

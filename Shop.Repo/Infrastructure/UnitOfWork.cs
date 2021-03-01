@@ -97,6 +97,19 @@ namespace Shop.Repo.Infrastructure
                 return productImageRepository;
             }
         }
+
+        private ISocialRepository socialRepository;
+        public ISocialRepository SocialRepository
+        {
+            get
+            {
+                if (socialRepository == null)
+                {
+                    socialRepository = new SocialRepository(_db);
+                }
+                return socialRepository;
+            }
+        }
         #endregion
 
         #region Save

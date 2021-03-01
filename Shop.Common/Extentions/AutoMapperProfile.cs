@@ -24,6 +24,9 @@ namespace Shop.Common.Extentions
             CreateMap<Product, ProductEditViewModel>();
             CreateMap<ProductAddViewModel, Product>();
             CreateMap<ProductEditViewModel, Product>();
+
+            CreateMap<Social, SocialViewModel>();
+            CreateMap<SocialViewModel, Social>();
         }
     }
 }

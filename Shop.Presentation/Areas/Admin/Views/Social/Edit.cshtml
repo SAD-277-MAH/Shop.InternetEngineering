@@ -1,0 +1,32 @@
+﻿@model Shop.Data.ViewModels.Admin.SocialViewModel
+
+@{
+    Layout = null;
+}
+
+<h4 class="text-center">ویرایش شبکه اجتماعی "@Model.Name"</h4>
+<hr />
+<form action="/Admin/Social/Edit/@ViewContext.RouteData.Values["id"]" method="post">
+    @Html.AntiForgeryToken()
+
+    <div asp-validation-summary="ModelOnly" class="text-danger validation-error"></div>
+    <div class="form-group">
+        <input asp-for="Name" class="form-control" placeholder="نام شبکه اجتماعی" />
+        <span asp-validation-for="Name" class="text-danger validation-error"></span>
+    </div>
+    <div class="form-group">
+        <input asp-for="Link" class="form-control" placeholder="لینک" />
+        <span asp-validation-for="Link" class="text-danger validation-error"></span>
+    </div>
+    <div class="form-group">
+        <input asp-for="Icon" class="form-control" placeholder="آیکون" />
+        <span asp-validation-for="Icon" class="text-danger validation-error"></span>
+    </div>
+    <div class="form-group">
+        <input asp-for="Color" type="color" class="form-control" id="cp" placeholder="رنگ" />
+        <span asp-validation-for="Color" class="text-danger validation-error"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="اعمال تغییرات" class="btn btn-success btn-block" />
+    </div>
+</form>
