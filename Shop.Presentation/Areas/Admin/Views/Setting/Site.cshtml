@@ -26,14 +26,17 @@
         }
 
         <div class="form-group">
+            <label asp-for="ShopName" class="control-label"></label>
             <input asp-for="ShopName" class="form-control" placeholder="نام فروشگاه" />
             <span asp-validation-for="ShopName" class="text-danger validation-error"></span>
         </div>
         <div class="form-group">
+            <label asp-for="ShopDesc" class="control-label"></label>
             <textarea asp-for="ShopDesc" class="form-control" placeholder="توضیحات فروشگاه"></textarea>
             <span asp-validation-for="ShopDesc" class="text-danger validation-error"></span>
         </div>
         <div class="form-group">
+            <label asp-for="ShopKeyWords" class="control-label"></label>
             <input asp-for="ShopKeyWords" type="text" id="exist-values" class="tagged form-control" data-removeBtn="true" placeholder="+ کلمه کلیدی">
             @*<textarea asp-for="ShopKeyWords" class="form-control" placeholder="کلمات کلیدی"></textarea>*@
             <span asp-validation-for="ShopKeyWords" class="text-danger validation-error"></span>
