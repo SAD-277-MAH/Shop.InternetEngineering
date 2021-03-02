@@ -29,5 +29,6 @@ namespace Shop.Data.Context
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<Social> Socials { get; set; }
+        public DbSet<License> Licenses { get; set; }
     }
 }

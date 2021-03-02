@@ -27,6 +27,9 @@ namespace Shop.Common.Extentions
 
             CreateMap<Social, SocialViewModel>();
             CreateMap<SocialViewModel, Social>();
+
+            CreateMap<License, LicenseViewModel>();
+            CreateMap<LicenseViewModel, License>();
         }
     }
 }

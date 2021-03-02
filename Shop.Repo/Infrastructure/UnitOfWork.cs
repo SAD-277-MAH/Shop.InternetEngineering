@@ -110,6 +110,19 @@ namespace Shop.Repo.Infrastructure
                 return socialRepository;
             }
         }
+
+        private ILicenseRepository licenseRepository;
+        public ILicenseRepository LicenseRepository
+        {
+            get
+            {
+                if (licenseRepository == null)
+                {
+                    licenseRepository = new LicenseRepository(_db);
+                }
+                return licenseRepository;
+            }
+        }
         #endregion
 
         #region Save

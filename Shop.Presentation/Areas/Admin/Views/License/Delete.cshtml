@@ -1,0 +1,17 @@
+﻿@{
+    Layout = null;
+}
+
+<h4 class="text-center">حذف مجوز</h4>
+<hr />
+<form action="/Admin/License/Delete/@ViewContext.RouteData.Values["id"]" method="post">
+    @Html.AntiForgeryToken()
+
+    <div asp-validation-summary="ModelOnly" class="text-danger validation-error"></div>
+    <div class="form-group">
+        <h4>از حذف مجوز مورد نظر اطمینان دارید؟</h4>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="حذف" class="btn btn-success btn-block" />
+    </div>
+</form>

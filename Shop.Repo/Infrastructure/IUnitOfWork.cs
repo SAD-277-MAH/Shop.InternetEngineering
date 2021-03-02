@@ -17,6 +17,7 @@ namespace Shop.Repo.Infrastructure
         IProductRepository ProductRepository { get; }
         IProductImageRepository ProductImageRepository { get; }
         ISocialRepository SocialRepository { get; }
+        ILicenseRepository LicenseRepository { get; }
 
         bool Save();
         Task<bool> SaveAsync();

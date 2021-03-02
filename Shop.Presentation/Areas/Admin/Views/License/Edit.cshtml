@@ -1,0 +1,47 @@
+﻿@model Shop.Data.ViewModels.Admin.LicenseViewModel
+
+@{
+    ViewData["Title"] = "ثبت مجوز جدید";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="col-lg-10 col-md-10 col-sm-10 col-10">
+    <div class="margin-bottom-50">
+        <h3 class="pull-right">
+            <span>ویرایش مجوز @Model.Name</span>
+        </h3>
+
+        <h3 class="pull-left">
+            <a href="/Admin/License" class="btn btn-primary">بازگشت</a>
+        </h3>
+    </div>
+
+    <div class="row"><hr /></div>
+
+    <form action="/Admin/License/Edit/@ViewContext.RouteData.Values["id"]" method="post">
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="ModelOnly" class="text-danger validation-error"></div>
+
+        <div class="form-group">
+            <input asp-for="Name" class="form-control" placeholder="نام مجوز" />
+            <span asp-validation-for="Name" class="text-danger validation-error"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Content" class="control-label"></label>
+            <textarea asp-for="Content" id="editor1" rows="10" cols="80"></textarea>
+            <span asp-validation-for="Content" class="text-danger validation-error"></span>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="ثبت" class="btn btn-success btn-block" />
+        </div>
+    </form>
+</div>
+
+@section script {
+    <script src="~/lib/ckeditor/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('editor1');
+    </script>
+}
