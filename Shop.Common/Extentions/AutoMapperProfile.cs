@@ -30,6 +30,8 @@ namespace Shop.Common.Extentions
 
             CreateMap<License, LicenseViewModel>();
             CreateMap<LicenseViewModel, License>();
+
+            CreateMap<User, UserDetailsViewModel>();
         }
     }
 }

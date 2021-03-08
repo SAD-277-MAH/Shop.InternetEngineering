@@ -1,0 +1,31 @@
+﻿@{
+    Layout = null;
+}
+
+@if (ViewBag.RoleName == "Admin")
+{
+    <h4 class="text-center">ارتقا مقام به مدیر</h4>
+}
+else
+{
+    <h4 class="text-center">تنزل مقام به کاربر</h4>
+}
+<hr />
+<form action="/Admin/UsersManagement/ChangeRole?UserName=@ViewBag.UserName&RoleName=@ViewBag.RoleName" method="post">
+    @Html.AntiForgeryToken()
+
+    <div asp-validation-summary="ModelOnly" class="text-danger validation-error"></div>
+    <div class="form-group">
+        @if (ViewBag.RoleName == "Admin")
+        {
+            <h4>از ارتقا مقام کاربر اطمینان دارید؟</h4>
+        }
+        else
+        {
+            <h4>از تنزل مقام کاربر اطمینان دارید؟</h4>
+        }
+    </div>
+    <div class="form-group">
+        <input type="submit" value="تأیید" class="btn btn-success btn-block" />
+    </div>
+</form>
