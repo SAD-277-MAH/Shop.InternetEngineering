@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Data.Context;
 using Shop.Data.Models;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 namespace Shop.Presentation.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    //[Authorize(Policy = "RequireAdminRole")]
+    [Authorize(Policy = "RequireAdminRole")]
     public class SettingController : Controller
     {
         private readonly IUnitOfWork<DatabaseContext> _db;

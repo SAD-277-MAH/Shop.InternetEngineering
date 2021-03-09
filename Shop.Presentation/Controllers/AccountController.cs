@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Shop.Presentation.Controllers
 {
@@ -17,14 +18,16 @@ namespace Shop.Presentation.Controllers
     {
         private readonly IUnitOfWork<DatabaseContext> _db;
         private readonly IAccountService _accountService;
+        private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IMessageSender _messageSender;
         private readonly IViewRenderService _viewRenderService;
 
-        public AccountController(IUnitOfWork<DatabaseContext> db, IAccountService accountService, SignInManager<User> signInManager, IMessageSender messageSender, IViewRenderService viewRenderService)
+        public AccountController(IUnitOfWork<DatabaseContext> db, IAccountService accountService, UserManager<User> userManager, SignInManager<User> signInManager, IMessageSender messageSender, IViewRenderService viewRenderService)
         {
             _db = db;
             _accountService = accountService;
+            _userManager = userManager;
             _signInManager = signInManager;
             _messageSender = messageSender;
             _viewRenderService = viewRenderService;
@@ -34,6 +37,17 @@ namespace Shop.Presentation.Controllers
         [Route("Register")]
         public IActionResult Register()
         {
+            if (_signInManager.IsSignedIn(User))
+            {
+                if (User.IsInRole("Admin"))
+                {
+                    return Redirect("/Admin");
+                }
+                else
+                {
+                    return Redirect("/Panel");
+                }
+            }
             ViewBag.SuccessRegister = false;
 
             return View();
@@ -94,23 +108,48 @@ namespace Shop.Presentation.Controllers
 
         #region Login
         [Route("Login")]
-        public IActionResult Login()
+        public IActionResult Login(string ReturnUrl = null)
         {
+            if (_signInManager.IsSignedIn(User))
+            {
+                if (User.IsInRole("Admin"))
+                {
+                    return Redirect("/Admin");
+                }
+                else
+                {
+                    return Redirect("/Panel");
+                }
+            }
+            ViewData["ReturnUrl"] = ReturnUrl;
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("Login")]
-        public async Task<IActionResult> Login(LoginViewModel viewModel)
+        public async Task<IActionResult> Login(LoginViewModel viewModel, string ReturnUrl = null)
         {
             if (ModelState.IsValid)
             {
                 var result = await _accountService.Login(viewModel);
                 if (result.Status)
                 {
-                    //ToDo redirect to panel
-                    return Redirect("/");
+                    if (!string.IsNullOrEmpty(ReturnUrl) && Url.IsLocalUrl(ReturnUrl))
+                    {
+                        return Redirect(ReturnUrl);
+                    }
+                    else
+                    {
+                        if (await _userManager.IsInRoleAsync(result.User, "Admin"))
+                        {
+                            return Redirect("/Admin");
+                        }
+                        else
+                        {
+                            return Redirect("/Panel");
+                        }
+                    }
                 }
                 else
                 {
@@ -118,11 +157,13 @@ namespace Shop.Presentation.Controllers
                     {
                         ModelState.AddModelError("", errorMessage);
                     }
+                    ViewData["ReturnUrl"] = ReturnUrl;
                     return View(viewModel);
                 }
             }
             else
             {
+                ViewData["ReturnUrl"] = ReturnUrl;
                 return View(viewModel);
             }
         }
@@ -226,7 +267,7 @@ namespace Shop.Presentation.Controllers
                     var token = await _accountService.GetChangePasswordToken(user);
                     var activateModel = new EmailUrlViewModel()
                     {
-                        Url = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}" + Url.Action(nameof(ResetPassword), new { UserName = user.UserName, Token = token })
+                        Url = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}" + Url.Action(nameof(ResetPassword), new { UserName = user.UserName, Token = HttpUtility.UrlEncode(token) })
                     };
                     string emailBody = _viewRenderService.RenderToString("_ForgetPasswordEmail", activateModel);
                     _messageSender.SendEmail(user.Email, "فراموشی رمز عبور", emailBody);
@@ -250,39 +291,85 @@ namespace Shop.Presentation.Controllers
         #endregion
 
         #region ResetPassword
-        [Route("ResetPassword")]
-        public async Task<IActionResult> ResetPassword(string UserName, string Token)
+        //[Route("ResetPassword")]
+        //public async Task<IActionResult> ResetPassword(string UserName, string Token)
+        //{
+        //    if (string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Token))
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var result = await _accountService.ResetPassword(UserName, Token);
+        //    if (!string.IsNullOrEmpty(result))
+        //    {
+        //        ViewBag.SuccessResetPassword = true;
+
+        //        // Send Email
+        //        var passwordModel = new ResetPasswordViewModel()
+        //        {
+        //            Value = result
+        //        };
+        //        string emailBody = _viewRenderService.RenderToString("_ResetPasswordEmail", passwordModel);
+        //        _messageSender.SendEmail(UserName, "تغییر کلمه عبور", emailBody);
+
+        //        return View();
+        //    }
+        //    else
+        //    {
+        //        return NotFound();
+        //    }
+        //}
+        public IActionResult ResetPassword(string UserName, string Token)
         {
-            if (string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Token))
-            {
-                return NotFound();
-            }
+            ViewData["UserName"] = UserName;
+            ViewData["Token"] = Token;
+            ViewBag.SuccessResetPassword = false;
+            return View();
+        }
 
-            var result = await _accountService.ResetPassword(UserName, Token);
-            if (!string.IsNullOrEmpty(result))
+        [HttpPost, ActionName("ResetPassword")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPasswordConfirm([FromQuery] string UserName, [FromQuery] string Token, SetPasswordViewModel viewModel)
+        {
+            if (ModelState.IsValid)
             {
-                ViewBag.SuccessResetPassword = true;
-
-                // Send Email
-                var passwordModel = new ResetPasswordViewModel()
+                if (string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Token))
                 {
-                    Value = result
-                };
-                string emailBody = _viewRenderService.RenderToString("_ResetPasswordEmail", passwordModel);
-                _messageSender.SendEmail(UserName, "تغییر کلمه عبور", emailBody);
+                    return NotFound();
+                }
 
-                return View();
+                var user = await _userManager.FindByNameAsync(UserName);
+                var result = await _userManager.ResetPasswordAsync(user, Token, viewModel.Password);
+                if (result.Succeeded)
+                {
+                    ViewData["UserName"] = UserName;
+                    ViewData["Token"] = Token;
+                    ViewBag.SuccessResetPassword = true;
+                    return View();
+                }
+                else
+                {
+                    ViewData["UserName"] = UserName;
+                    ViewData["Token"] = Token;
+                    ViewBag.SuccessResetPassword = false;
+                    ModelState.AddModelError("", "خطا در تغییر رمز عبور");
+                    return View(viewModel);
+                }
             }
             else
             {
-                return NotFound();
+                ViewData["UserName"] = UserName;
+                ViewData["Token"] = Token;
+                ViewBag.SuccessResetPassword = false;
+                return View(viewModel);
             }
         }
         #endregion
 
         #region Logout
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[HttpPost()]
+        //[ValidateAntiForgeryToken]
+        [Route("Logout")]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
