@@ -50,7 +50,7 @@
                     </div>
 
                     <div class="user-pic">
-                        <img src="~/images/site/logo.png" alt="فروشگاه اینترنتی" class="img-responsive" width="80" height="80" />
+                        <img src="@user.PhotoUrl.Replace("/wwwroot", "")" alt="فروشگاه اینترنتی" class="img-responsive" width="80" height="80" />
                     </div>
                 </div>
 
@@ -124,6 +124,29 @@
                                     </li>
                                     <li>
                                         <a href="/Admin/License">مجوز ها</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-menu">
+                    <ul>
+                        <li class="sidebar-dropdown">
+                            <a href="#">
+                                <span class="pull-right">حساب کاربری</span>
+
+                                <span class="item-icon pull-left far fa-address-card"></span>
+                            </a>
+
+                            <div class="sidebar-submenu">
+                                <ul>
+                                    <li>
+                                        <a href="/Admin/Profile">مشاهده و ویرایش اطلاعات کاربری</a>
+                                    </li>
+                                    <li>
+                                        <a href="/Admin/Profile/ChangePassword">تغییر کلمه عبور</a>
                                     </li>
                                 </ul>
                             </div>

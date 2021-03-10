@@ -1,0 +1,120 @@
+﻿@model Shop.Data.ViewModels.Admin.ProfileEditViewModel
+@using Shop.Services.Scopes
+@using Shop.Data.ViewModels.Admin
+
+@inject AdminLayoutScope scope
+
+@{
+    UserDetailViewModel user = await scope.GetUserDetail(User.Identity.Name);
+}
+
+@{
+    ViewData["Title"] = "اطلاعات کاربری";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container">
+    <div class="row gutters">
+        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="account-settings _account-settings">
+                        <div class="user-profile _user-profile">
+                            <div class="user-avatar _user-avatar">
+                                <img src="@user.PhotoUrl.Replace("/wwwroot", "")" alt="@user.FullName">
+                            </div>
+                            <h5 class="user-name">@user.FullName</h5>
+                            <h6 class="user-email">@user.Email</h6>
+                        </div>
+                        <!-- <div class="about">
+                            <h5 class="mb-2 text-primary">About</h5>
+                            <p>I'm Yuki. Full Stack Designer I enjoy creating user-centric, delightful and
+                                human experiences.</p>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+            <div class="card _card h-100">
+                <div class="card-body">
+                    <form action="/Admin/Profile" method="post" enctype="multipart/form-data">
+                        @Html.AntiForgeryToken()
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger validation-error"></div>
+
+                        @if (ViewBag.ChangeSuccess != null && ViewBag.ChangeSuccess)
+                        {
+                            <div class="form-group">
+                                <div class="alert alert-success text-center">
+                                    <h4 class="text-center">
+                                        تغییرات با موفقیت اعمال شد
+                                    </h4>
+                                </div>
+                            </div>
+                        }
+
+                        <div class="row gutters">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <h6 class="mb-3 text-primary">اطلاعات کاربری</h6>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label asp-for="Email" class="control-label"></label>
+                                    <input asp-for="Email" class="form-control _form-control" placeholder="ایمیل" disabled />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label asp-for="FullName" class="control-label"></label>
+                                    <input asp-for="FullName" class="form-control _form-control" placeholder="نام و نام خانوادگی" />
+                                    <span asp-validation-for="FullName" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row gutters">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <h6 class="mb-3 text-primary">تصویر پروفایل</h6>
+                            </div>
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="form-group image-form-center">
+                                    <input asp-for="File" type="file" id="file" onchange="readURL(this);" />
+                                    <label for="file" class="btn-2">انتخاب تصویر پروفایل</label>
+                                    <img src="@user.PhotoUrl.Replace("/wwwroot", "")" class="img-fluid _image-fileupload" id="profile-image" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row gutters">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="text-right">
+                                    <input type="submit" value="ثبت" name="submit" class="btn btn-primary" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section script {
+    <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#profile-image')
+                        .attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+}

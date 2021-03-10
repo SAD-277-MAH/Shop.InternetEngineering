@@ -25,6 +25,7 @@ namespace Shop.Services.Scopes
             {
                 FullName = user.FullName,
                 Email = user.Email,
+                PhotoUrl = user.PhotoUrl,
                 RoleName = "مدیر وبسایت"
             };
 
