@@ -21,5 +21,8 @@ namespace Shop.Data.Models
         [Display(Name = "فعال / غیر فعال")]
         [Required]
         public bool IsActive { get; set; }
+
+
+        public virtual ICollection<CouponUser> CouponUsers { get; set; }
     }
 }

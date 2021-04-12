@@ -155,6 +155,127 @@ namespace Shop.Data.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("Shop.Data.Models.Coupon", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<int>("CountLimit")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("EndDateLimit")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("HasCategoryLimit")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("HasCountLimit")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("HasDateLimit")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("HasProductLimit")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("HasUserLimit")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("StartDateLimit")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<bool>("Type")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Coupons");
+                });
+
+            modelBuilder.Entity("Shop.Data.Models.CouponCategory", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CouponId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("CouponId");
+
+                    b.ToTable("CouponCategories");
+                });
+
+            modelBuilder.Entity("Shop.Data.Models.CouponProduct", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CouponId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProductId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CouponId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("CouponProducts");
+                });
+
+            modelBuilder.Entity("Shop.Data.Models.CouponUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CouponId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CouponId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("CouponUsers");
+                });
+
             modelBuilder.Entity("Shop.Data.Models.License", b =>
                 {
                     b.Property<int>("Id")
@@ -499,6 +620,51 @@ namespace Shop.Data.Migrations
                     b.HasOne("Shop.Data.Models.Category", "Parent")
                         .WithMany("Categories")
                         .HasForeignKey("ParentId");
+                });
+
+            modelBuilder.Entity("Shop.Data.Models.CouponCategory", b =>
+                {
+                    b.HasOne("Shop.Data.Models.Category", "Category")
+                        .WithMany("CouponCategories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Shop.Data.Models.Coupon", "Coupon")
+                        .WithMany("CouponCategories")
+                        .HasForeignKey("CouponId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Shop.Data.Models.CouponProduct", b =>
+                {
+                    b.HasOne("Shop.Data.Models.Coupon", "Coupon")
+                        .WithMany("CouponProducts")
+                        .HasForeignKey("CouponId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Shop.Data.Models.Product", "Product")
+                        .WithMany("CouponProducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Shop.Data.Models.CouponUser", b =>
+                {
+                    b.HasOne("Shop.Data.Models.Coupon", "Coupon")
+                        .WithMany("CouponUsers")
+                        .HasForeignKey("CouponId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Shop.Data.Models.User", "User")
+                        .WithMany("CouponUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Shop.Data.Models.Product", b =>

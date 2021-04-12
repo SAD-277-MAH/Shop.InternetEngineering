@@ -30,5 +30,9 @@ namespace Shop.Data.Context
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<Social> Socials { get; set; }
         public DbSet<License> Licenses { get; set; }
+        public DbSet<Coupon> Coupons { get; set; }
+        public DbSet<CouponUser> CouponUsers { get; set; }
+        public DbSet<CouponProduct> CouponProducts { get; set; }
+        public DbSet<CouponCategory> CouponCategories { get; set; }
     }
 }

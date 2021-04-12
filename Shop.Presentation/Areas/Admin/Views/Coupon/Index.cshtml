@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Shop.Data.Models.Coupon>
+@using System.Net
+
+@{
+    ViewData["Title"] = "کد های تخفیف";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-10 col-offset-1">
+    <div>
+        <h3>
+            <span>کد های تخفیف</span>
+        </h3>
+
+        <h3 class="pull-left">
+            <a href="/Admin/Coupon/Add" class="btn btn-primary">جدید</a>
+        </h3>
+    </div>
+
+    <div class="margin-top-30">
+        <table class="table table-bordered table-hover" id="myTable">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Title)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Code)
+                    </th>
+                    <th>عملیات</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Code)
+                        </td>
+                        <td>
+                            <a href="/Admin/Coupon/Details/@item.Id" class="btn-sm btn-primary">مشاهده</a> |
+                            <a href="/Admin/Coupon/Edit/@item.Id" class="btn-sm btn-warning">ویرایش</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

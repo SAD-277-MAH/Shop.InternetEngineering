@@ -92,10 +92,11 @@ namespace Shop.Presentation
             services.AddScoped<IUnitOfWork<DatabaseContext>, UnitOfWork<DatabaseContext>>();
             services.AddTransient<SeedService>();
             services.AddTransient<IMessageSender, MessageSender>();
-            services.AddTransient<IAccountService, AccountService>();
-            services.AddTransient<IUserService, UserService>();
             services.AddScoped<IUploadService, UploadService>();
             services.AddScoped<IUtilities, Utilities>();
+            services.AddScoped<ICodeGenerator, CodeGenerator>();
+            services.AddTransient<IAccountService, AccountService>();
+            services.AddTransient<IUserService, UserService>();
 
             services.AddScoped<AdminLayoutScope>();
         }

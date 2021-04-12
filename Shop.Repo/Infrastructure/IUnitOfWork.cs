@@ -18,6 +18,10 @@ namespace Shop.Repo.Infrastructure
         IProductImageRepository ProductImageRepository { get; }
         ISocialRepository SocialRepository { get; }
         ILicenseRepository LicenseRepository { get; }
+        ICouponRepository CouponRepository { get; }
+        ICouponUserRepository CouponUserRepository { get; }
+        ICouponProductRepository CouponProductRepository { get; }
+        ICouponCategoryRepository CouponCategoryRepository { get; }
 
         bool Save();
         Task<bool> SaveAsync();

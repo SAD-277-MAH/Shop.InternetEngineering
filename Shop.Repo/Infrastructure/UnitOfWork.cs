@@ -123,6 +123,58 @@ namespace Shop.Repo.Infrastructure
                 return licenseRepository;
             }
         }
+
+        private ICouponRepository couponRepository;
+        public ICouponRepository CouponRepository
+        {
+            get
+            {
+                if (couponRepository == null)
+                {
+                    couponRepository = new CouponRepository(_db);
+                }
+                return couponRepository;
+            }
+        }
+
+        private ICouponUserRepository couponUserRepository;
+        public ICouponUserRepository CouponUserRepository
+        {
+            get
+            {
+                if (couponUserRepository == null)
+                {
+                    couponUserRepository = new CouponUserRepository(_db);
+                }
+                return couponUserRepository;
+            }
+        }
+
+        private ICouponProductRepository couponProductRepository;
+        public ICouponProductRepository CouponProductRepository
+        {
+            get
+            {
+                if (couponProductRepository == null)
+                {
+                    couponProductRepository = new CouponProductRepository(_db);
+                }
+                return couponProductRepository;
+            }
+        }
+
+        private ICouponCategoryRepository couponCategoryRepository;
+        public ICouponCategoryRepository CouponCategoryRepository
+        {
+            get
+            {
+                if (couponCategoryRepository == null)
+                {
+                    couponCategoryRepository = new CouponCategoryRepository(_db);
+                }
+                return couponCategoryRepository;
+            }
+        }
         #endregion
 
         #region Save

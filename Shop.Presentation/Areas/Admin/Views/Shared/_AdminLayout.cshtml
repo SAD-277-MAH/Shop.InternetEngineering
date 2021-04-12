@@ -18,6 +18,7 @@
 
     <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/lib/fontawesome/dist/css/all.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
     <link href="~/css/admin.css" rel="stylesheet" />
 </head>
 <body>
@@ -85,6 +86,18 @@
                                 <span class="pull-right">دسته بندی ها</span>
 
                                 <span class="item-icon pull-left fa fa-list-ul"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-menu">
+                    <ul>
+                        <li class="sidebar-dropdown">
+                            <a href="/Admin/Coupon">
+                                <span class="pull-right">کد های تخفیف</span>
+
+                                <span class="item-icon pull-left fas fa-percent"></span>
                             </a>
                         </li>
                     </ul>
@@ -184,6 +197,7 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
     <script src="~/js/admin.js"></script>
     @RenderSection("script", false)
 </body>

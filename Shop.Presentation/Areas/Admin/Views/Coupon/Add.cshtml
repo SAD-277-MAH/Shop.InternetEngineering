@@ -1,0 +1,279 @@
+﻿@model Shop.Data.ViewModels.Admin.CouponViewModel
+
+@{
+    ViewData["Title"] = "ثبت کد تخفیف جدید";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="col-lg-8 col-md-8 col-sm-10 col-12">
+    <div class="margin-bottom-50">
+        <h3 class="pull-right">
+            <span>ثبت کد تخفیف جدید</span>
+        </h3>
+
+        <h3 class="pull-left">
+            <a href="/Admin/Coupon" class="btn btn-primary">بازگشت</a>
+        </h3>
+    </div>
+
+    <div class="row">
+        <hr />
+    </div>
+
+    <form action="/Admin/Coupon/Add" method="post">
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="ModelOnly" class="text-danger validation-error"></div>
+
+        <div class="form-row">
+            <div class="col-md-7 mb-3 row ">
+                <label asp-for="Title" class="col-md-1 mt-1"></label>
+                <input asp-for="Title" class="form-control col-md-8 mr-4">
+                <span asp-validation-for="Title" class="text-danger validation-error"></span>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col-md-3 mt-1">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="Type" id="percentRadio" value="percent"
+                           checked>
+                    <label class="form-check-label mr-3 mb-3" for="percentRadio">
+                        درصدی
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-md-3 mt-1">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="Type" id="valueRadio" value="value">
+                    <label class="form-check-label mr-3 mb-3" for="valueRadio">
+                        مقداری
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-md-5 mb-3 row" id="percentDiv">
+                <label asp-for="PercentDiscount" class="col-md-2 mt-1"></label>
+                <input asp-for="PercentDiscount" class="form-control col-md-8 mr-3" value="1" min="1" max="100">
+                <span asp-validation-for="PercentDiscount" class="text-danger validation-error"></span>
+            </div>
+
+            <div class="col-md-5 mb-3 row" id="valueDiv" style="display: none">
+                <label asp-for="ValueDiscount" class="col-md-2 mt-1"></label>
+                <input asp-for="ValueDiscount" class="form-control col-md-8 mr-3" value="1" min="1">
+                <span asp-validation-for="ValueDiscount" class="text-danger validation-error"></span>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col-md-4 mt-1 mb-4">
+                <div class="form-check">
+                    <input asp-for="HasCountLimit" class="form-check-input" id="countLimitCheckbox">
+                    <label asp-for="HasCountLimit" class="form-check-label mr-3" for="countLimitCheckbox"></label>
+                    <span asp-validation-for="HasCountLimit" class="text-danger validation-error"></span>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3 row" id="countLimitDiv" style="display: none">
+                <label asp-for="CountLimit" class="col-md-2 mt-1"></label>
+                <input asp-for="CountLimit" type="number" class="form-control col-md-8 mr-3" value="1" min="1">
+                <span asp-validation-for="CountLimit" class="text-danger validation-error"></span>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col-md-3 mt-1">
+                <div class="form-check">
+                    <input asp-for="HasDateLimit" class="form-check-input" id="dateLimitCheckbox">
+                    <label asp-for="HasDateLimit" class="form-check-label mr-3 mb-5" for="dateLimitCheckbox"></label>
+                    <span asp-validation-for="HasDateLimit" class="text-danger validation-error"></span>
+                </div>
+            </div>
+
+            <div class="col-md-9 mb-3 row" id="dateLimitDiv" style="display: none">
+                <div class="col-md-6 mb-3 row">
+                    <label asp-for="StartDateLimit" class="col-md-2 mt-1"></label>
+                    <input asp-for="StartDateLimit" type="datetime-local" class="form-control col-md-8 mr-3" id="startDate">
+                    <span asp-validation-for="StartDateLimit" class="text-danger validation-error"></span>
+                </div>
+                <div class="col-md-6 mb-3 row">
+                    <label asp-for="EndDateLimit" class="col-md-2 mt-1"></label>
+                    <input asp-for="EndDateLimit" type="datetime-local" class="form-control col-md-8 mr-3" id="endDate">
+                    <span asp-validation-for="EndDateLimit" class="text-danger validation-error"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col-md-4 mt-1 mb-4">
+                <div class="form-check">
+                    <input asp-for="HasUserLimit" class="form-check-input" type="checkbox" id="userLimitCheckbox">
+                    <label asp-for="HasUserLimit" class="form-check-label mr-3" for="userLimitCheckbox"></label>
+                    <span asp-validation-for="HasUserLimit" class="text-danger validation-error"></span>
+                </div>
+            </div>
+            <div class="col-md-8 mb-3 row" id="userLimitDiv" style="display: none">
+                <label asp-for="Users" class="col-md-2 mt-1"></label>
+                <select asp-for="Users" class="selectpicker form-control col-md-10" asp-items="ViewBag.UsersId"  multiple data-live-search="true"></select>
+                <span asp-validation-for="Users" class="text-danger validation-error"></span>
+            </div>
+        </div>
+
+        <div class="form-row mb-3">
+            <div class="col-md-12 mt-1">
+                <div class="form-check">
+                    <input asp-for="HasProductOrCategoryLimit" class="form-check-input" id="productCategoryLimitCheckbox">
+                    <label asp-for="HasProductOrCategoryLimit" class="form-check-label mr-3" for="productCategoryLimitCheckbox"></label>
+                    <span asp-validation-for="HasProductOrCategoryLimit" class="text-danger validation-error"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row" id="productLimitSection" style="display: none">
+            <div class="col-md-3 mt-1">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="ProductOrCategoryLimit" id="productLimitRadio" value="product" checked>
+                    <label class="form-check-label mr-3 mb-3" for="productLimitRadio">
+                        محدودیت کالا
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-9 mb-3 row" id="productLimitDiv">
+                <label asp-for="Products" class="col-md-2 mt-1"></label>
+                <select asp-for="Products" class="selectpicker form-control col-md-10" asp-items="ViewBag.ProductsId" multiple data-live-search="true"></select>
+                <span asp-validation-for="Products" class="text-danger validation-error"></span>
+            </div>
+        </div>
+
+        <div class="form-row" id="categoryLimitSection" style="display: none">
+            <div class="col-md-3 mt-1">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="ProductOrCategoryLimit" id="categoryLimitRadio" value="category">
+                    <label class="form-check-label mr-3 mb-3" for="categoryLimitRadio">
+                        محدودیت دسته بندی
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-9 mb-3 row" id="categoryLimitDiv" style="display: none">
+                <label asp-for="Categories" class="col-md-2 mt-1" for="validationCustom03"></label>
+                <select asp-for="Categories" class="selectpicker form-control col-md-10" asp-items="ViewBag.CategoriesId" multiple data-live-search="true"></select>
+                <span asp-validation-for="Categories" class="text-danger validation-error"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="ثبت" class="btn btn-success btn-block" />
+        </div>
+    </form>
+</div>
+
+@section script {
+    <script>
+        $(function () {
+            $(document).ready(function () {
+                var today = new Date();
+                var date = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+                var time = ('0' + today.getHours()).slice(-2) + ":" + ('0' + today.getMinutes()).slice(-2);
+                var dateTime = date + 'T' + time;
+                $("#startDate").val(dateTime);
+                $("#endDate").val(dateTime);
+
+                if ($("#countLimitCheckbox").is(":checked")) {
+                    $("#countLimitDiv").show();
+                } else {
+                    $("#countLimitDiv").hide();
+                }
+
+                if ($("#dateLimitCheckbox").is(":checked")) {
+                    $("#dateLimitDiv").show();
+                } else {
+                    $("#dateLimitDiv").hide();
+                }
+
+                if ($("#userLimitCheckbox").is(":checked")) {
+                    $("#userLimitDiv").show();
+                } else {
+                    $("#userLimitDiv").hide();
+                }
+
+                if ($("#productCategoryLimitCheckbox").is(":checked")) {
+                    $("#productLimitSection").show();
+                    $("#categoryLimitSection").show();
+                } else {
+                    $("#productLimitSection").hide();
+                    $("#categoryLimitSection").hide();
+                }
+
+                if ($("#productCategoryLimitCheckbox").is(":checked") && $("input[name=ProductOrCategoryLimit]").val() == 'category') {
+                    $("#categoryLimitDiv").show();
+                    $("#productLimitDiv").hide();
+                } else {
+                    $("#categoryLimitDiv").hide();
+                    $("#productLimitDiv").show();
+                }
+
+                if ($("#productCategoryLimitCheckbox").is(":checked") && $("input[name=Type]").val() == 'percent') {
+                    $("#percentDiv").show();
+                    $("#valueDiv").hide();
+                } else {
+                    $("#percentDiv").hide();
+                    $("#valueDiv").show();
+                }
+            });
+
+            $("#countLimitCheckbox").click(function () {
+                if ($(this).is(":checked")) {
+                    $("#countLimitDiv").show();
+                } else {
+                    $("#countLimitDiv").hide();
+                }
+            });
+
+            $("#dateLimitCheckbox").click(function () {
+                if ($(this).is(":checked")) {
+                    $("#dateLimitDiv").show();
+                } else {
+                    $("#dateLimitDiv").hide();
+                }
+            });
+
+            $("#userLimitCheckbox").click(function () {
+                if ($(this).is(":checked")) {
+                    $("#userLimitDiv").show();
+                } else {
+                    $("#userLimitDiv").hide();
+                }
+            });
+
+            $("#productCategoryLimitCheckbox").click(function () {
+                if ($(this).is(":checked")) {
+                    $("#productLimitSection").show();
+                    $("#categoryLimitSection").show();
+                } else {
+                    $("#productLimitSection").hide();
+                    $("#categoryLimitSection").hide();
+                }
+            });
+
+            $("input[name=ProductOrCategoryLimit]").on("change", function () {
+                if ($(this).val() == 'product') {
+                    $("#productLimitDiv").show();
+                    $("#categoryLimitDiv").hide();
+                } else {
+                    $("#productLimitDiv").hide();
+                    $("#categoryLimitDiv").show();
+                }
+            });
+
+            $("input[name=Type]").on("change", function () {
+                if ($(this).val() == 'percent') {
+                    $("#percentDiv").show();
+                    $("#valueDiv").hide();
+                } else {
+                    $("#percentDiv").hide();
+                    $("#valueDiv").show();
+                }
+            });
+        });
+    </script>
+}

@@ -34,5 +34,7 @@ namespace Shop.Data.Models
         public virtual ICollection<Category> Categories { get; set; }
 
         public virtual ICollection<Product> Products { get; set; }
+
+        public virtual ICollection<CouponCategory> CouponCategories { get; set; }
     }
 }

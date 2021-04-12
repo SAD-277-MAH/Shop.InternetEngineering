@@ -1,0 +1,146 @@
+﻿@model Shop.Data.ViewModels.Admin.CouponDetailViewModel
+
+@{
+    ViewData["Title"] = "جزئیات کد تخفیف";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="col-lg-10 col-md-10 col-sm-10 col-10">
+    <div class="margin-bottom-50">
+        <h3 class="pull-right">
+            <span>مشاهده جزئیات کد تخفیف [@Model.Title]</span>
+        </h3>
+
+        <h class="pull-left">
+            <a href="/Admin/Coupon" class="btn btn-primary">بازگشت</a>
+        </h>
+    </div>
+
+    <div class="row"><hr /></div>
+
+    <div class="row justify-content-between margin-top-10">
+        <div class="col-lg-10 col-md-10 col-sm-12 col-12">
+            <div class="product-detail row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                    <h4>@Html.DisplayNameFor(model => model.Title)</h4>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                    <p class="product-detail-text">@Html.DisplayFor(model => model.Title)</p>
+                </div>
+            </div>
+            <div class="product-detail row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                    <h4>@Html.DisplayNameFor(model => model.Type)</h4>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                    <p class="product-detail-text">@Html.DisplayFor(model => model.Type)</p>
+                </div>
+            </div>
+            <div class="product-detail row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                    <h4>@Html.DisplayNameFor(model => model.Value)</h4>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                    <p class="product-detail-text">@Html.DisplayFor(model => model.Value)</p>
+                </div>
+            </div>
+            <div class="product-detail row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                    <h4>@Html.DisplayNameFor(model => model.HasCountLimit)</h4>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                    <p class="product-detail-text">@Html.DisplayFor(model => model.HasCountLimit)</p>
+                </div>
+            </div>
+            <div class="product-detail row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                    <h4>@Html.DisplayNameFor(model => model.CountLimit)</h4>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                    <p class="product-detail-text">@Html.DisplayFor(model => model.CountLimit)</p>
+                </div>
+            </div>
+            <div class="product-detail row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                    <h4>@Html.DisplayNameFor(model => model.HasDateLimit)</h4>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                    <p class="product-detail-text">@Html.DisplayFor(model => model.HasDateLimit)</p>
+                </div>
+            </div>
+            <div class="product-detail row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                    <h4>@Html.DisplayNameFor(model => model.StartDateLimit)</h4>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                    <p class="product-detail-text">@Html.DisplayFor(model => model.StartDateLimit)</p>
+                </div>
+            </div>
+            <div class="product-detail row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                    <h4>@Html.DisplayNameFor(model => model.EndDateLimit)</h4>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                    <p class="product-detail-text">@Html.DisplayFor(model => model.EndDateLimit)</p>
+                </div>
+            </div>
+            <div class="product-detail row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                    <h4>@Html.DisplayNameFor(model => model.HasUserLimit)</h4>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                    <p class="product-detail-text">@Html.DisplayFor(model => model.HasUserLimit)</p>
+                </div>
+            </div>
+            <div class="product-detail row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                    <h4>@Html.DisplayNameFor(model => model.Users)</h4>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                    @foreach (var user in Model.Users)
+                    {
+                        <p class="product-detail-text">@user</p>
+                    }
+                </div>
+            </div>
+            <div class="product-detail row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                    <h4>@Html.DisplayNameFor(model => model.HasProductLimit)</h4>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                    <p class="product-detail-text">@Html.DisplayFor(model => model.HasProductLimit)</p>
+                </div>
+            </div>
+            <div class="product-detail row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                    <h4>@Html.DisplayNameFor(model => model.Products)</h4>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                    @foreach (var product in Model.Products)
+                    {
+                        <p class="product-detail-text">@product</p>
+                    }
+                </div>
+            </div>
+            <div class="product-detail row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                    <h4>@Html.DisplayNameFor(model => model.HasCategoryLimit)</h4>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                    <p class="product-detail-text">@Html.DisplayFor(model => model.HasCategoryLimit)</p>
+                </div>
+            </div>
+            <div class="product-detail row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                    <h4>@Html.DisplayNameFor(model => model.Categories)</h4>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                    @foreach (var category in Model.Categories)
+                    {
+                        <p class="product-detail-text">@category</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
