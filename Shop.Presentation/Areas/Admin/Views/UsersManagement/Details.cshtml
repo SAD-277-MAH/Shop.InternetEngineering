@@ -1,0 +1,178 @@
+﻿@model Shop.Data.ViewModels.Admin.UserFullDetailsViewModel
+
+@{
+    ViewData["Title"] = "جزئیات کاربر";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="col-lg-10 col-md-10 col-sm-10 col-10">
+    <div class="margin-bottom-50">
+        <h3 class="pull-right">
+            <span>مشاهده جزئیات کابر [@Model.UserName]</span>
+        </h3>
+
+        <h class="pull-left">
+            <a href="/Admin/UsersManagement" class="btn btn-primary">بازگشت</a>
+        </h>
+    </div>
+
+    <div class="row"><hr /></div>
+
+    <div class="row justify-content-between margin-top-10">
+        <div class="col-lg-7 col-md-7 col-sm-12 col-12">
+            <div class="product-detail row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                    <h4>@Html.DisplayNameFor(model => model.UserName)</h4>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                    <p class="product-detail-text">@Html.DisplayFor(model => model.UserName)</p>
+                </div>
+            </div>
+            <div class="product-detail row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                    <h4>@Html.DisplayNameFor(model => model.FullName)</h4>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                    <p class="product-detail-text">@Html.DisplayFor(model => model.FullName)</p>
+                </div>
+            </div>
+            <div class="product-detail row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                    <h4>@Html.DisplayNameFor(model => model.RoleName)</h4>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                    <p class="product-detail-text">@Html.DisplayFor(model => model.RoleName)</p>
+                </div>
+                <div class="col-lg-5 col-md-5 col-sm-12 col-12 mt-2">
+                    @if (Model.RoleName == "کاربر")
+                    {
+                        <a href="#" onclick="ChangeRole('@Model.UserName', 'Admin')" class="btn-sm btn-success">ارتقا مقام به مدیر</a>
+                    }
+                    else
+                    {
+                        <a href="#" onclick="ChangeRole('@Model.UserName', 'User')" class="btn-sm btn-danger">تنزل مقام به کاربر</a>
+                    }
+                </div>
+            </div>
+            <div class="product-detail row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                    <h4>@Html.DisplayNameFor(model => model.IsActive)</h4>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                    @if (Model.IsActive)
+                    {
+                        <p class="product-detail-text">فعال</p>
+                    }
+                    else
+                    {
+                        <p class="product-detail-text">غیر فعال</p>
+                    }
+                </div>
+                <div class="col-lg-5 col-md-5 col-sm-12 col-12 mt-2">
+                    @if (Model.IsActive)
+                    {
+                        <a href="#" onclick="ChangeActive('@Model.UserName', false)" class="btn-sm btn-danger">غیر فعالسازی حساب کاربری</a>
+                    }
+                    else
+                    {
+                        <a href="#" onclick="ChangeActive('@Model.UserName', true)" class="btn-sm btn-success">فعالسازی حساب کاربری</a>
+                    }
+                </div>
+            </div>
+            <div class="product-detail row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                    <h4>@Html.DisplayNameFor(model => model.EmailConfirmed)</h4>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                    @if (Model.EmailConfirmed)
+                    {
+                        <p class="product-detail-text">تأیید شده</p>
+                    }
+                    else
+                    {
+                        <p class="product-detail-text">تأیید نشده</p>
+                    }
+                </div>
+                <div class="col-lg-5 col-md-5 col-sm-12 col-12 mt-2">
+                    @if (!Model.EmailConfirmed)
+                    {
+                        <a href="#" onclick="ConfirmEmail('@Model.UserName')" class="btn-sm btn-success">تأیید ایمیل</a>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+            <div class="image-form-center margin-top-10">
+                <img src="@Model.PhotoUrl.Replace("/wwwroot", "")" class="img-fluid image-fileupload" id="product-image" />
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-3">
+                <a href="#" onclick="ChangePassword('@Model.UserName')" class="btn-block btn-lg btn-success">تغییر رمز عبور</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalBox" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div id="modalBody" class="modal-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section script {
+    <script>
+        function ChangeRole(userName, roleName) {
+            $.ajax({
+                url: "/Admin/UsersManagement/ChangeRole?UserName=" + userName + "&RoleName=" + roleName,
+                type: "Get",
+                data: {}
+            }).done(function (result) {
+                $('#modalBox').modal('show');
+                $('#modalBody').html(result);
+            });
+        }
+
+        function ChangeActive(userName, status) {
+            $.ajax({
+                url: "/Admin/UsersManagement/ChangeActive?UserName=" + userName + "&Status=" + status,
+                type: "Get",
+                data: {}
+            }).done(function (result) {
+                $('#modalBox').modal('show');
+                $('#modalBody').html(result);
+            });
+        }
+
+        function ConfirmEmail(userName) {
+            $.ajax({
+                url: "/Admin/UsersManagement/ConfirmEmail?UserName=" + userName,
+                type: "Get",
+                data: {}
+            }).done(function (result) {
+                $('#modalBox').modal('show');
+                $('#modalBody').html(result);
+            });
+        }
+
+        function ChangePassword(userName) {
+            $.ajax({
+                url: "/Admin/UsersManagement/ChangePassword?UserName=" + userName,
+                type: "Get",
+                data: {}
+            }).done(function (result) {
+                $('#modalBox').modal('show');
+                $('#modalBody').html(result);
+            });
+        }
+    </script>
+}

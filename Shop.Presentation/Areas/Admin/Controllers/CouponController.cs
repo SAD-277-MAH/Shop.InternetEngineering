@@ -38,7 +38,6 @@ namespace Shop.Presentation.Areas.Admin.Controllers
             return View(coupons);
         }
 
-
         public async Task<IActionResult> Details(string id)
         {
             var coupon = await _db.CouponRepository.GetAsync(p => p.Id == id, "CouponUsers,CouponProducts,CouponCategories");

@@ -1,0 +1,31 @@
+﻿@{
+    Layout = null;
+}
+
+@if (ViewBag.Status == true)
+{
+    <h4 class="text-center">فعالسازی حساب کاربری</h4>
+}
+else
+{
+    <h4 class="text-center">غیر فعالسازی حساب کاربری</h4>
+}
+<hr />
+<form action="/Admin/UsersManagement/ChangeActive?UserName=@ViewBag.UserName&Status=@ViewBag.Status" method="post">
+    @Html.AntiForgeryToken()
+
+    <div asp-validation-summary="ModelOnly" class="text-danger validation-error"></div>
+    <div class="form-group">
+        @if (ViewBag.Status == true)
+        {
+            <h4>از فعالسازی حساب کاربری اطمینان دارید؟</h4>
+        }
+        else
+        {
+            <h4>از غیر فعالسازی حساب کاربری اطمینان دارید؟</h4>
+        }
+    </div>
+    <div class="form-group">
+        <input type="submit" value="تأیید" class="btn btn-success btn-block" />
+    </div>
+</form>

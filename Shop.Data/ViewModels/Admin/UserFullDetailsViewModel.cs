@@ -5,10 +5,8 @@ using System.Text;
 
 namespace Shop.Data.ViewModels.Admin
 {
-    public class UserDetailsViewModel
+    public class UserFullDetailsViewModel
     {
-        public string Id { get; set; }
-
         [Display(Name = "نام کاربری")]
         public string UserName { get; set; }
 
@@ -20,5 +18,11 @@ namespace Shop.Data.ViewModels.Admin
 
         [Display(Name = "فغال / غیر فعال")]
         public bool IsActive { get; set; }
+
+        [Display(Name = "وضعیت ایمیل")]
+        public bool EmailConfirmed { get; set; }
+
+        [Display(Name = "تصویر پروفایل")]
+        public string PhotoUrl { get; set; }
     }
 }

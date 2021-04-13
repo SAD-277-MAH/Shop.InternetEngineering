@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Data.Context;
 using Shop.Data.Models;
+using Shop.Data.ViewModels.Account;
 using Shop.Data.ViewModels.Admin;
 using Shop.Repo.Infrastructure;
 using System;
@@ -48,6 +49,29 @@ namespace Shop.Presentation.Areas.Admin.Controllers
 
             return View(usersDetails.OrderBy(u => u.RoleName).ThenByDescending(u => u.UserName));
         }
+
+        public async Task<IActionResult> Details(string id)
+        {
+            var user = await _db.UserRepository.GetAsync(u => u.Id == id, string.Empty);
+            if (user != null)
+            {
+                var userDetails = _mapper.Map<UserFullDetailsViewModel>(user);
+                if (await _userManager.IsInRoleAsync(user, "Admin"))
+                {
+                    userDetails.RoleName = "مدیر سیستم";
+                }
+                else
+                {
+                    userDetails.RoleName = "کاربر";
+                }
+
+                return View(userDetails);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
         #endregion
 
         #region ChangeRole
@@ -67,7 +91,7 @@ namespace Shop.Presentation.Areas.Admin.Controllers
                 var user = await _userManager.FindByNameAsync(UserName);
                 if (await _userManager.IsInRoleAsync(user, RoleName))
                 {
-                    return Redirect("/Admin/UsersManagement");
+                    return Redirect("/Admin/UsersManagement/Details/" + user.Id);
                 }
                 else
                 {
@@ -75,12 +99,111 @@ namespace Shop.Presentation.Areas.Admin.Controllers
                     await _userManager.RemoveFromRolesAsync(user, roles);
                     await _userManager.AddToRoleAsync(user, RoleName);
 
-                    return Redirect("/Admin/UsersManagement");
+                    return Redirect("/Admin/UsersManagement/Details/" + user.Id);
                 }
             }
             else
             {
                 ViewData["RoleName"] = RoleName;
+                ViewData["UserName"] = UserName;
+                return View();
+            }
+        }
+        #endregion
+
+        #region ChangeActive
+        public IActionResult ChangeActive([FromQuery] string UserName, [FromQuery] bool Status)
+        {
+            ViewData["Status"] = Status;
+            ViewData["UserName"] = UserName;
+            return View();
+        }
+
+        [HttpPost, ActionName("ChangeActive")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangeActiveConfirm([FromQuery] string UserName, [FromQuery] bool Status)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByNameAsync(UserName);
+                if (user.IsActive = Status)
+                {
+                    return Redirect("/Admin/UsersManagement/Details/" + user.Id);
+                }
+                else
+                {
+                    user.IsActive = Status;
+                    _db.UserRepository.Update(user);
+                    await _db.SaveAsync();
+
+                    return Redirect("/Admin/UsersManagement/Details/" + user.Id);
+                }
+            }
+            else
+            {
+                ViewData["Status"] = Status;
+                ViewData["UserName"] = UserName;
+                return View();
+            }
+        }
+        #endregion
+
+        #region ConfirmEmail
+        public IActionResult ConfirmEmail([FromQuery] string UserName)
+        {
+            ViewData["UserName"] = UserName;
+            return View();
+        }
+
+        [HttpPost, ActionName("ConfirmEmail")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ConfirmEmailConfirm([FromQuery] string UserName)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByNameAsync(UserName);
+                if (user.EmailConfirmed)
+                {
+                    return Redirect("/Admin/UsersManagement/Details/" + user.Id);
+                }
+                else
+                {
+                    user.EmailConfirmed = true;
+                    _db.UserRepository.Update(user);
+                    await _db.SaveAsync();
+
+                    return Redirect("/Admin/UsersManagement/Details/" + user.Id);
+                }
+            }
+            else
+            {
+                ViewData["UserName"] = UserName;
+                return View();
+            }
+        }
+        #endregion
+
+        #region ChangePassword
+        public IActionResult ChangePassword([FromQuery] string UserName)
+        {
+            ViewData["UserName"] = UserName;
+            return View();
+        }
+
+        [HttpPost, ActionName("ChangePassword")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePasswordConfirm([FromQuery] string UserName, SetPasswordViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByNameAsync(UserName);
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                await _userManager.ResetPasswordAsync(user, token, viewModel.Password);
+
+                return Redirect("/Admin/UsersManagement/Details/" + user.Id);
+            }
+            else
+            {
                 ViewData["UserName"] = UserName;
                 return View();
             }
