@@ -22,6 +22,10 @@ namespace Shop.Data.Models
         [Required]
         public bool IsActive { get; set; }
 
+        [Display(Name = "تاریخ عضویت")]
+        [Required]
+        public DateTime RegisterDate { get; set; }
+
 
         public virtual ICollection<CouponUser> CouponUsers { get; set; }
     }

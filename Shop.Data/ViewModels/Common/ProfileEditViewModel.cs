@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Shop.Data.ViewModels.Admin
+namespace Shop.Data.ViewModels.Common
 {
     public class ProfileEditViewModel
     {

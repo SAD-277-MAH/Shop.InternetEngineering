@@ -6,7 +6,7 @@ using Shop.Common.Extentions;
 using Shop.Common.Helpers.Interface;
 using Shop.Data.Context;
 using Shop.Data.Models;
-using Shop.Data.ViewModels.Admin;
+using Shop.Data.ViewModels.Common;
 using Shop.Repo.Infrastructure;
 using Shop.Services.Upload.Interface;
 using System;

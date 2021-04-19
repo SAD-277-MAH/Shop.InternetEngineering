@@ -99,6 +99,7 @@ namespace Shop.Presentation
             services.AddTransient<IUserService, UserService>();
 
             services.AddScoped<AdminLayoutScope>();
+            services.AddScoped<PanelLayoutScope>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,0 +1,76 @@
+﻿@model Shop.Data.ViewModels.Panel.UserDetailDashboardViewModel
+
+@{
+    ViewData["Title"] = "داشبورد";
+    Layout = "~/Areas/Panel/Views/Shared/_PanelLayout.cshtml";
+}
+
+<header>
+    <h1> داشبورد </h1>
+</header>
+<div class="inner">
+    <div class="account-information">
+        <h3> اطلاعات کاربری </h3>
+        <ul>
+            <li>
+                <i class="fas fa-user"></i> نام و نام خانوادگی : @Model.FullName
+            </li>
+            <li> <i class="fas fa-at"></i> ایمیل : @Model.Email </li>
+            <li>
+                <i class="fas fa-calendar-alt"></i> تاریخ عضویت : @Model.RegisterDate
+            </li>
+            <li> <i class="fas fa-money-bill"></i> موجودی حساب : 10,000 تومان </li>
+        </ul>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-4">
+            <a href="#" onclick="EditProfile()" class="btn btn-primary btn-sm btn-block"> ویرایش مشخصات </a>
+        </div>
+        <div class="col-lg-4">
+            <a href="#" onclick="ChangePassword()" class="btn btn-outline-primary btn-sm btn-block"> تغییر رمز عبور </a>
+        </div>
+    </div>
+</div>
+
+<div id="modalBox" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div id="modalBody" class="modal-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section script {
+    <script>
+        function EditProfile() {
+            $.ajax({
+                url: "/Panel/Dashboard/EditProfile",
+                type: "Get",
+                data: {}
+            }).done(function (result) {
+                $('#modalBox').modal('show');
+                $('#modalBody').html(result);
+            });
+        }
+
+        function ChangePassword() {
+            $.ajax({
+                url: "/Panel/Dashboard/ChangePassword",
+                type: "Get",
+                data: {}
+            }).done(function (result) {
+                $('#modalBox').modal('show');
+                $('#modalBody').html(result);
+            });
+        }
+    </script>
+}

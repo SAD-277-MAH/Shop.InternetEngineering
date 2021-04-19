@@ -1,0 +1,80 @@
+﻿@using Shop.Services.Scopes
+@using Shop.Data.ViewModels.Panel
+
+@inject PanelLayoutScope scope
+
+@{
+    UserDetailViewModel user = await scope.GetUserDetail(User.Identity.Name);
+}
+
+
+<!DOCTYPE html>
+
+<html lang="fa">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>پنل کاربری | @ViewData["Title"]</title>
+
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/fontawesome/dist/css/all.min.css" rel="stylesheet" />
+    <link href="~/css/panel.css" rel="stylesheet" />
+</head>
+<body>
+    <main>
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">فروشگاه اینترنتی</a></li>
+                    <li class="breadcrumb-item"><a href="/Panel">پنل کاربری</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"> داشبورد </li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="container">
+            <div class="user-account">
+                <div class="row">
+
+                    <div class="col-md-3 col-sm-4 col-12">
+                        <aside>
+                            <div class="avatar-layer">
+                                <div class="img-layer">
+                                    <a href="" class="change-image"><i class="far fa-edit"></i></a>
+                                    <img src="@user.PhotoUrl.Replace("/wwwroot", "")" alt="@user.FullName" />
+                                </div>
+                                <div class="detail">
+                                    <span> @user.FullName </span>
+                                    <span> عضویت : @user.RegisterDate </span>
+                                </div>
+                            </div>
+
+                            <section>
+                                <header>
+                                    <h3> پنل کاربری </h3>
+                                </header>
+                                <div class="inner">
+                                    <ul>
+                                        <li><a href="/Panel"><i class="fas fa-desktop"></i> داشبورد </a></li>
+                                        <li><a href="/Logout"><i class="fas fa-sign-out-alt"></i> خروج از حساب کاربری </a></li>
+                                    </ul>
+                                </div>
+                            </section>
+                        </aside>
+                    </div>
+
+                    <div class="col-md-9 col-sm-8 col-12">
+                        <section class="user-account-content">
+                            @RenderBody()
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @RenderSection("script", false)
+</body>
+</html>

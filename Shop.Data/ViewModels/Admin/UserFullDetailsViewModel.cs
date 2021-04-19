@@ -24,5 +24,8 @@ namespace Shop.Data.ViewModels.Admin
 
         [Display(Name = "تصویر پروفایل")]
         public string PhotoUrl { get; set; }
+
+        [Display(Name = "تاریخ عضویت")]
+        public string RegisterDate { get; set; }
     }
 }

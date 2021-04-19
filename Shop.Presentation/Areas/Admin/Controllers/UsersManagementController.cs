@@ -9,6 +9,7 @@ using Shop.Data.ViewModels.Admin;
 using Shop.Repo.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -56,6 +57,10 @@ namespace Shop.Presentation.Areas.Admin.Controllers
             if (user != null)
             {
                 var userDetails = _mapper.Map<UserFullDetailsViewModel>(user);
+
+                PersianCalendar pc = new PersianCalendar();
+                userDetails.RegisterDate = $"{pc.GetYear(user.RegisterDate)}/{pc.GetMonth(user.RegisterDate)}/{pc.GetDayOfMonth(user.RegisterDate)}";
+
                 if (await _userManager.IsInRoleAsync(user, "Admin"))
                 {
                     userDetails.RoleName = "مدیر سیستم";

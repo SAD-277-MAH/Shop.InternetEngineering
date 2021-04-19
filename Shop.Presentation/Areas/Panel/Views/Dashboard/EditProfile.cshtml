@@ -1,0 +1,39 @@
+﻿@model Shop.Data.ViewModels.Common.ProfileEditViewModel
+@using Shop.Services.Scopes
+@using Shop.Data.ViewModels.Admin
+
+@inject AdminLayoutScope scope
+
+@{
+    UserDetailViewModel user = await scope.GetUserDetail(User.Identity.Name);
+}
+
+@{
+    Layout = null;
+}
+
+<h4 class="text-center">ویرایش مشخصات</h4>
+<hr />
+<form action="/Panel/Dashboard/EditProfile" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+
+    <div asp-validation-summary="ModelOnly" class="text-danger validation-error"></div>
+    <div class="form-group">
+        <label asp-for="Email" class="control-label"></label>
+        <input asp-for="Email" class="form-control" placeholder="ایمیل" disabled />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="FullName" class="control-label"></label>
+        <input asp-for="FullName" class="form-control" placeholder="نام و نام خانوادگی" />
+        <span asp-validation-for="FullName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input asp-for="File" type="file" id="file" />
+        <label for="file" class="btn-2">انتخاب تصویر پروفایل</label>
+        <span asp-validation-for="File" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="ثبت" class="btn btn-success btn-block" />
+    </div>
+</form>
