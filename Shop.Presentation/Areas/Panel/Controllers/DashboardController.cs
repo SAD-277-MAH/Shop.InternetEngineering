@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Common.Extentions;
@@ -138,6 +139,51 @@ namespace Shop.Presentation.Areas.Panel.Controllers
             else
             {
                 return View(viewModel);
+            }
+        }
+        #endregion
+
+        #region UploadProfilePhoto
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UploadProfilePhoto(IFormFile file)
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            if (ModelState.IsValid)
+            {
+                string url = user.PhotoUrl;
+                if (file.IsImage())
+                {
+                    var uploadResult = await _uploadService.UploadFile(file, string.Format("{0}://{1}{2}", Request.Scheme, Request.Host.Value, Request.PathBase.Value), "Users\\" + user.Id + "\\Profile");
+
+                    if (uploadResult.Status)
+                    {
+                        if (url != "/images/site/default.png")
+                        {
+                            try
+                            {
+                                _uploadService.RemoveFileFromLocal(_utilities.FindLocalPathFromUrl(url));
+                            }
+                            catch { }
+                        }
+
+                        url = uploadResult.Url;
+                    }
+                    else
+                    {
+                        return Redirect("/Panel");
+                    }
+                }
+
+                user.PhotoUrl = url;
+                _db.UserRepository.Update(user);
+                await _db.SaveAsync();
+
+                return Redirect("/Panel");
+            }
+            else
+            {
+                return Redirect("/Panel");
             }
         }
         #endregion

@@ -40,8 +40,12 @@
                         <aside>
                             <div class="avatar-layer">
                                 <div class="img-layer">
-                                    <a href="" class="change-image"><i class="far fa-edit"></i></a>
-                                    <img src="@user.PhotoUrl.Replace("/wwwroot", "")" alt="@user.FullName" />
+                                    <form>
+                                        @Html.AntiForgeryToken()
+                                        <input type="file" onchange="uploadFile('profilePhoto');" id="profilePhoto" style="display:none" />
+                                    </form>
+                                    <a href="#" class="change-image" onclick="openFileDialog()"><i class="far fa-edit"></i></a>
+                                    <img src="@user.PhotoUrl.Replace("/wwwroot", "")" alt="@user.FullName" id="profile-image" />
                                 </div>
                                 <div class="detail">
                                     <span> @user.FullName </span>
@@ -76,6 +80,40 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function openFileDialog() {
+            $('#profilePhoto').trigger('click');
+        }
+
+        function uploadFile(inputId) {
+            var fileUpload = $("#" + inputId).get(0);
+            var files = fileUpload.files;
+            var formData = new FormData();
+            formData.append('file', files[0]);
+
+            $.ajax({
+                url: '/Panel/Dashboard/UploadProfilePhoto',
+                type: 'POST',
+                data: formData,
+                headers: {
+                    RequestVerificationToken:
+                        $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
+                processData: false,
+                contentType: false,
+                success: function (result) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#profile-image')
+                            .attr('src', e.target.result);
+                    };
+
+                    reader.readAsDataURL(files[0]);
+                }
+            });
+        }
+    </script>
     @RenderSection("script", false)
 </body>
 </html>
