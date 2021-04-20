@@ -22,6 +22,7 @@ namespace Shop.Repo.Infrastructure
         ICouponUserRepository CouponUserRepository { get; }
         ICouponProductRepository CouponProductRepository { get; }
         ICouponCategoryRepository CouponCategoryRepository { get; }
+        IAddressRepository AddressRepository { get; }
 
         bool Save();
         Task<bool> SaveAsync();

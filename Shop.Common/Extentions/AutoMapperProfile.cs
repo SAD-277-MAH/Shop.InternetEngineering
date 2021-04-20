@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Shop.Data.Models;
 using Shop.Data.ViewModels.Admin;
+using Shop.Data.ViewModels.Panel;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -33,6 +34,10 @@ namespace Shop.Common.Extentions
 
             CreateMap<User, UserDetailsViewModel>();
             CreateMap<User, UserFullDetailsViewModel>();
+
+            CreateMap<Address, AddressViewModel>();
+            CreateMap<AddressViewModel, Address>();
+            CreateMap<AddressAddViewModel, Address>();
         }
     }
 }

@@ -34,5 +34,6 @@ namespace Shop.Data.Context
         public DbSet<CouponUser> CouponUsers { get; set; }
         public DbSet<CouponProduct> CouponProducts { get; set; }
         public DbSet<CouponCategory> CouponCategories { get; set; }
+        public DbSet<Address> Addresses { get; set; }
     }
 }

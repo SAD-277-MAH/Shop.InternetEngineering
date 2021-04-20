@@ -175,6 +175,19 @@ namespace Shop.Repo.Infrastructure
                 return couponCategoryRepository;
             }
         }
+
+        private IAddressRepository addressRepository;
+        public IAddressRepository AddressRepository
+        {
+            get
+            {
+                if (addressRepository == null)
+                {
+                    addressRepository = new AddressRepository(_db);
+                }
+                return addressRepository;
+            }
+        }
         #endregion
 
         #region Save
