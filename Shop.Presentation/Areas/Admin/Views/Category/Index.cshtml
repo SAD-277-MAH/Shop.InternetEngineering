@@ -79,6 +79,9 @@
             }).done(function (result) {
                 $('#modalBox').modal('show');
                 $('#modalBody').html(result);
+                $("form").removeData("validator");
+                $("form").removeData("unobtrusiveValidation");
+                $.validator.unobtrusive.parse($('form'));
             });
         }
 
@@ -90,6 +93,9 @@
             }).done(function (result) {
                 $('#modalBox').modal('show');
                 $('#modalBody').html(result);
+                $("form").removeData("validator");
+                $("form").removeData("unobtrusiveValidation");
+                $.validator.unobtrusive.parse($('form'));
             });
         }
 
@@ -101,6 +107,9 @@
             }).done(function (result) {
                 $('#modalBox').modal('show');
                 $('#modalBody').html(result);
+                $("form").removeData("validator");
+                $("form").removeData("unobtrusiveValidation");
+                $.validator.unobtrusive.parse($('form'));
             });
         }
     </script>

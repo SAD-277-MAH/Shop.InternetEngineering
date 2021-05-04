@@ -27,7 +27,7 @@
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/">فروشگاه اینترنتی</a></li>
                     <li class="breadcrumb-item"><a href="/Panel">پنل کاربری</a></li>
-                    <li class="breadcrumb-item active" aria-current="page"> داشبورد </li>
+                    <li class="breadcrumb-item active" aria-current="page"> @ViewData["Title"] </li>
                 </ul>
             </nav>
         </div>
@@ -79,6 +79,8 @@
     </main>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function openFileDialog() {
