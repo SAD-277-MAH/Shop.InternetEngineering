@@ -1,0 +1,167 @@
+﻿@model Shop.Data.ViewModels.Panel.OrderDetailsViewModel
+
+@{
+    ViewData["Title"] = "سبد خرید";
+    Layout = "~/Areas/Panel/Views/Shared/_PanelLayout.cshtml";
+}
+
+<header>
+    <h1> سبد خرید </h1>
+</header>
+
+<div class="inner">
+    @if (Model == null || Model.OrderDetails.Count() == 0)
+    {
+        <div class="alert alert-info" role="alert" style="margin: 0 auto; font-size: larger;">
+            <strong>توجه! </strong> سبد خرید شما خالی است
+        </div>
+    }
+    else
+    {
+        <table class="table table-striped table-hover table-responsive">
+            <thead>
+                <tr>
+                    <th>تصویر محصول</th>
+                    <th>نام محصول</th>
+                    <th>تعداد</th>
+                    <th>قیمت واحد</th>
+                    <th>جمع قیمت</th>
+                    <th>عملیات</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.OrderDetails)
+                {
+                    <tr>
+                        <td>
+                            <img src="@item.PhotoUrl.Replace("/wwwroot", "")" style="max-width: 150px" class="thumbnail" />
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <a href="/Panel/Order/DecreaseCount/@item.ProductId" class="btn btn-outline-primary"><span class="fas fa-minus"></span></a>
+                                <button type="button" class="btn btn-outline-primary" disabled>
+                                    @item.Count
+                                </button>
+                                <a href="/Panel/Order/IncreaseCount/@item.ProductId" class="btn btn-outline-primary"><span class="fas fa-plus"></span></a>
+                            </div>
+                        </td>
+                        <td>
+                            @String.Format("{0:n0}", item.Price) تومان
+                        </td>
+                        <td>
+                            @String.Format("{0:n0}", (item.Price * item.Count)) تومان
+                        </td>
+                        <td>
+                            <a href="/Panel/Order/RemoveFromOrder/@item.ProductId" class="btn btn-outline-danger">
+                                <span class="fas fa-trash-alt"></span>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <hr />
+
+        <div class="row justify-content-between">
+            <div class="col-md-5">
+                <div class="card">
+                    <div class="card-body">
+                        <h2>پیش فاکتور</h2>
+                    </div>
+
+                    <br />
+
+                    <div class="px-4">
+                        <p class="mb-1">
+                            قیمت کل:
+                            <strong>
+                                @String.Format("{0:n0}", Model.OrderSum) تومان
+                            </strong>
+                        </p>
+                        <hr />
+                        <p>هزینه ارسال: <strong>20,000 تومان</strong></p>
+                        <hr />
+                        <p>
+                            تخفیف:
+                            <strong>
+                                @String.Format("{0:n0}", Model.Discount) تومان
+                            </strong>
+                        </p>
+                        <hr />
+                        <p>
+                            مجموع:
+                            <strong>
+                                @String.Format("{0:n0}", Convert.ToInt32(Model.OrderSum - Model.Discount + 20000)) تومان
+                            </strong>
+                        </p>
+                    </div>
+
+                    <div class="card-body">
+                        <form>
+                            @Html.AntiForgeryToken()
+                            <div class="form-group row">
+                                <label for="inputAddress" class="col-form-label">
+                                    آدرس تحویل سفارش
+                                </label>
+                                <select asp-items="ViewBag.Addresses" id="inputAddress" class="form-control"></select>
+                            </div>
+                            <div class="form-group row">
+                                <button type="submit" class="btn btn-outline-primary btn-block">
+                                    تأیید و پرداخت
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h2>کد تخفیف</h2>
+                    </div>
+
+                    <br />
+
+                    <div class="input-group mb-3 mr-3">
+                        <form action="/Panel/Order/AddCouponToOrder" method="post">
+                            @Html.AntiForgeryToken()
+
+                            <div asp-validation-summary="ModelOnly" class="text-danger validation-error"></div>
+                            <div class="form-row align-items-center">
+                                <div class="col-auto">
+                                    <label class="sr-only" for="inlineFormInput">
+                                        کد تخفیف
+                                    </label>
+                                    <input type="text" name="couponCode" class="form-control mb-2" id="inlineFormInput" placeholder="کد تخفیف">
+                                </div>
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-outline-primary mb-2">
+                                        اعمال
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    @if (Model.CouponOrders.Any())
+                    {
+                        <ul class="list-group list-group-flush">
+                            @foreach (var item in Model.CouponOrders)
+                            {
+                                <li class="list-group-item">
+                                    <a href="/Panel/Order/RemoveCouponFromOrder/@item.CouponId" class="badge badge-danger ml-2 coupon-remove"><span class="fas fa-times"></span></a>
+                                    @item.Code
+                                </li>
+                            }
+                        </ul>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>

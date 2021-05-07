@@ -314,3 +314,8 @@ img {
                 [type=file] + label.btn-2:hover::before {
                     right: 82%;
                 }
+
+.coupon-remove {
+    border-radius: 50%;
+    float: right;
+}

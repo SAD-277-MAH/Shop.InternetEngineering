@@ -97,6 +97,8 @@ namespace Shop.Presentation
             services.AddScoped<ICodeGenerator, CodeGenerator>();
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IOrderService, OrderService>();
+            services.AddTransient<ICouponService, CouponService>();
 
             services.AddScoped<AdminLayoutScope>();
             services.AddScoped<PanelLayoutScope>();

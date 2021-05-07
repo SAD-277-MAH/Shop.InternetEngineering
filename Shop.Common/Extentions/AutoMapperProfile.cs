@@ -38,6 +38,31 @@ namespace Shop.Common.Extentions
             CreateMap<Address, AddressViewModel>();
             CreateMap<AddressViewModel, Address>();
             CreateMap<AddressAddViewModel, Address>();
+
+            CreateMap<Order, OrderDetailsViewModel>();
+            CreateMap<OrderDetail, OrderDetailsDetailViewModel>()
+                .ForMember(dest => dest.Name, opt =>
+                 {
+                     opt.MapFrom(src => src.Product.Name);
+                 })
+                .ForMember(dest => dest.PhotoUrl, opt =>
+                {
+                    opt.MapFrom(src => src.Product.PhotoUrl);
+                });
+            CreateMap<CouponOrder, OrderDetailsCouponViewModel>()
+                .ForMember(dest => dest.Code, opt =>
+                {
+                    opt.MapFrom(src => src.Coupon.Code);
+                });
+            CreateMap<Address, AddressSelectListViewModel>()
+                .ForMember(dest => dest.Address, opt =>
+                {
+                    opt.MapFrom(src => 
+                    string.IsNullOrEmpty(src.Unit) ? 
+                    $"{src.Province}, {src.City}, {src.PostalAddress}, پلاک {src.NO}, کد پستی: {src.PostalCode}" :
+                    $"{src.Province}, {src.City}, {src.PostalAddress}, پلاک {src.NO}, واحد {src.Unit}, کد پستی: {src.PostalCode}"
+                    );
+                });
         }
     }
 }

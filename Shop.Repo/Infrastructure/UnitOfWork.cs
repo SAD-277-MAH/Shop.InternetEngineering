@@ -188,6 +188,45 @@ namespace Shop.Repo.Infrastructure
                 return addressRepository;
             }
         }
+
+        private IOrderRepository orderRepository;
+        public IOrderRepository OrderRepository
+        {
+            get
+            {
+                if (orderRepository == null)
+                {
+                    orderRepository = new OrderRepository(_db);
+                }
+                return orderRepository;
+            }
+        }
+
+        private IOrderDetailRepository orderDetailRepository;
+        public IOrderDetailRepository OrderDetailRepository
+        {
+            get
+            {
+                if (orderDetailRepository == null)
+                {
+                    orderDetailRepository = new OrderDetailRepository(_db);
+                }
+                return orderDetailRepository;
+            }
+        }
+
+        private ICouponOrderRepository couponOrderRepository;
+        public ICouponOrderRepository CouponOrderRepository
+        {
+            get
+            {
+                if (couponOrderRepository == null)
+                {
+                    couponOrderRepository = new CouponOrderRepository(_db);
+                }
+                return couponOrderRepository;
+            }
+        }
         #endregion
 
         #region Save
