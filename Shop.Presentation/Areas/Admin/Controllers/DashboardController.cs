@@ -29,7 +29,7 @@ namespace Shop.Presentation.Areas.Admin.Controllers
             var viewModel = new DashboardViewModel();
             var factors = await _db.FactorRepository.GetAsync();
 
-            viewModel.UnSendOrders = factors.Where(f => !f.HasSent).Count();
+            viewModel.UnSendOrders = factors.Where(f => f.Status && !f.HasSent).Count();
             //TODO -------------------
             viewModel.UnSeenTickets = 10;
             viewModel.UnApprovedComments = 15;
@@ -38,7 +38,7 @@ namespace Shop.Presentation.Areas.Admin.Controllers
             for (int i = 6; i >= 0; i--)
             {
                 DateTime date = today.AddDays(-i);
-                var factorsOfDay = factors.Where(f => f.DateCreated.Year == date.Year && f.DateCreated.Month == date.Month && f.DateCreated.Day == date.Day);
+                var factorsOfDay = factors.Where(f => f.Status && f.DateCreated.Year == date.Year && f.DateCreated.Month == date.Month && f.DateCreated.Day == date.Day);
                 int sumOfDay = factorsOfDay.Sum(f => f.Price);
                 var chartData = new ChartViewModel()
                 {
