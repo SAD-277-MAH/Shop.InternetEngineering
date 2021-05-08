@@ -57,11 +57,22 @@ namespace Shop.Common.Extentions
             CreateMap<Address, AddressSelectListViewModel>()
                 .ForMember(dest => dest.Address, opt =>
                 {
-                    opt.MapFrom(src => 
-                    string.IsNullOrEmpty(src.Unit) ? 
+                    opt.MapFrom(src =>
+                    string.IsNullOrEmpty(src.Unit) ?
                     $"{src.Province}, {src.City}, {src.PostalAddress}, پلاک {src.NO}, کد پستی: {src.PostalCode}" :
                     $"{src.Province}, {src.City}, {src.PostalAddress}, پلاک {src.NO}, واحد {src.Unit}, کد پستی: {src.PostalCode}"
                     );
+                });
+
+            CreateMap<Factor, FactorPanelViewModel>()
+                .ForMember(dest => dest.DateCreated, opt =>
+                {
+                    opt.MapFrom(src => src.DateCreated.ToShamsiDateTime());
+                });
+            CreateMap<Factor, FactorAdminViewModel>()
+                .ForMember(dest => dest.DateCreated, opt =>
+                {
+                    opt.MapFrom(src => src.DateCreated.ToShamsiDateTime());
                 });
         }
     }

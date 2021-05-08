@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Text;
 
 namespace Shop.Common.Extentions
@@ -26,6 +27,12 @@ namespace Shop.Common.Extentions
             {
                 return false;
             }
+        }
+
+        public static string ToShamsiDateTime(this DateTime dateTime)
+        {
+            PersianCalendar pc = new PersianCalendar();
+            return $"{pc.GetYear(dateTime)}/{pc.GetMonth(dateTime)}/{pc.GetDayOfMonth(dateTime)} {dateTime.Hour}:{dateTime.Minute}";
         }
     }
 }

@@ -18,6 +18,10 @@ namespace Shop.Data.ViewModels.Panel
         [Required(ErrorMessage = "مقدار {0} را وارد کنید")]
         public int Discount { get; set; }
 
+        [Display(Name = "آدرس تحویل سفارش")]
+        public string Address { get; set; }
+
+
         public List<OrderDetailsDetailViewModel> OrderDetails { get; set; }
 
         public List<OrderDetailsCouponViewModel> CouponOrders { get; set; }

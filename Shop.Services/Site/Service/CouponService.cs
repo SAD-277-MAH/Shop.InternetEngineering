@@ -228,7 +228,7 @@ namespace Shop.Services.Site.Service
                     {
                         foreach (var orderDetail in order.OrderDetails)
                         {
-                            int categoryId = (await _db.ProductRepository.GetAsync(orderDetail.Id)).CategoryId;
+                            int categoryId = (await _db.ProductRepository.GetAsync(orderDetail.ProductId)).CategoryId;
                             var productHasCoupon = await _db.CouponCategoryRepository.GetAsync(c => c.CouponId == couponId && c.CategoryId == categoryId, string.Empty);
                             if (productHasCoupon != null)
                             {

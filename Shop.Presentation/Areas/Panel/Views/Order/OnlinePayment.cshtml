@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewData["Title"] = "وضعیت پرداخت";
+    Layout = "~/Areas/Panel/Views/Shared/_PanelLayout.cshtml";
+}
+
+<header>
+    <h1> وضعیت پرداخت </h1>
+</header>
+
+<div class="inner">
+    @if (ViewBag.PaymentStatus)
+    {
+        <div class="alert alert-info" role="alert" style="margin: 0 auto; font-size: larger;">
+            <p><strong>عملیات پرداخت با موفقیت انجام شد</strong></p>
+            <p><strong>کد رهگیری: @ViewBag.PaymentCode</strong></p>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger" role="alert" style="margin: 0 auto; font-size: larger;">
+            <p><strong>عملیات پرداخت ناموفق بود!</strong></p>
+        </div>
+    }
+</div>

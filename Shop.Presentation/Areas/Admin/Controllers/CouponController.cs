@@ -456,6 +456,11 @@ namespace Shop.Presentation.Areas.Admin.Controllers
                                 coupon.HasProductLimit = false;
                             }
                         }
+                        else
+                        {
+                            coupon.HasProductLimit = false;
+                            coupon.HasCategoryLimit = false;
+                        }
                         #endregion
 
                         _db.CouponRepository.Update(coupon);

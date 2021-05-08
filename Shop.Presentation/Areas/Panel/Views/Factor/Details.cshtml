@@ -1,0 +1,89 @@
+﻿@model Shop.Data.ViewModels.Panel.OrderDetailsViewModel
+
+@{
+    ViewData["Title"] = "جزئیات سفارش";
+    Layout = "~/Areas/Panel/Views/Shared/_PanelLayout.cshtml";
+}
+
+<header>
+    <h1> جزئیات سفارش </h1>
+</header>
+
+<div class="inner">
+    <div class="alert alert-info" role="alert" style="margin: 0 auto; font-size: larger;">
+        <p><strong>آدرس تحویل سفارش: </strong> @Model.Address</p>
+    </div>
+
+    <table class="table table-striped table-hover table-responsive">
+        <thead>
+            <tr>
+                <th>تصویر محصول</th>
+                <th>نام محصول</th>
+                <th>تعداد</th>
+                <th>قیمت واحد</th>
+                <th>جمع قیمت</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.OrderDetails)
+            {
+                <tr>
+                    <td>
+                        <img src="@item.PhotoUrl.Replace("/wwwroot", "")" style="max-width: 150px" class="thumbnail" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Count)
+                    </td>
+                    <td>
+                        @String.Format("{0:n0}", item.Price) تومان
+                    </td>
+                    <td>
+                        @String.Format("{0:n0}", (item.Price * item.Count)) تومان
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <hr />
+
+    <div class="row justify-content-between">
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-body">
+                    <h2>فاکتور</h2>
+                </div>
+
+                <br />
+
+                <div class="px-4">
+                    <p class="mb-1">
+                        قیمت کل:
+                        <strong>
+                            @String.Format("{0:n0}", Model.OrderSum) تومان
+                        </strong>
+                    </p>
+                    <hr />
+                    <p>هزینه ارسال: <strong>20,000 تومان</strong></p>
+                    <hr />
+                    <p>
+                        تخفیف:
+                        <strong>
+                            @String.Format("{0:n0}", Model.Discount) تومان
+                        </strong>
+                    </p>
+                    <hr />
+                    <p>
+                        مجموع:
+                        <strong>
+                            @String.Format("{0:n0}", Convert.ToInt32(Model.OrderSum - Model.Discount + 20000)) تومان
+                        </strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

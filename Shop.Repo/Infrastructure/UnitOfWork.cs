@@ -227,6 +227,19 @@ namespace Shop.Repo.Infrastructure
                 return couponOrderRepository;
             }
         }
+
+        private IFactorRepository factorRepository;
+        public IFactorRepository FactorRepository
+        {
+            get
+            {
+                if (factorRepository == null)
+                {
+                    factorRepository = new FactorRepository(_db);
+                }
+                return factorRepository;
+            }
+        }
         #endregion
 
         #region Save

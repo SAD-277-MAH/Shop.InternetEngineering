@@ -1,0 +1,127 @@
+﻿@model IEnumerable<Shop.Data.ViewModels.Admin.FactorAdminViewModel>
+
+@{
+    ViewData["Title"] = "فاکتور ها";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-10 col-offset-1">
+    <div>
+        <h3>
+            <span>فاکتور ها</span>
+        </h3>
+    </div>
+
+    <div class="margin-top-30">
+        @if (Model.Count() == 0)
+        {
+            <div class="alert alert-info" role="alert" style="margin: 0 auto; font-size: larger;">
+                <strong>توجه! </strong> هیچ فاکتوری برای شما ثبت نشده است
+            </div>
+        }
+        else
+        {
+            <table class="table table-bordered table-hover" id="myTable">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FullName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Email)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.DateCreated)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Price)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.BankTrackingCode)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.HasSent)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PostTrackingCode)
+                        </th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FullName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateCreated)
+                        </td>
+                        <td>
+                            @String.Format("{0:n0}", item.Price) تومان
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BankTrackingCode)
+                        </td>
+                        <td>
+                            @if (item.HasSent)
+                            {
+                                <span class="badge badge-success">ارسال شده</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-warning">در حال آماده سازی</span>
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PostTrackingCode)
+                        </td>
+                        <td>
+                            <a href="/Admin/Factor/Details/@item.OrderId" class="btn btn-sm btn-primary">جزئیات سفارش</a> |
+                            <a href="#" onclick="PostOrder('@item.OrderId')" class="btn btn-sm btn-success">ارسال سفارش</a>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+<div id="modalBox" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div id="modalBody" class="modal-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section script {
+    <script>
+        function PostOrder(id) {
+            $.ajax({
+                url: "/Admin/Factor/PostOrder/" + id,
+                type: "Get",
+                data: {}
+            }).done(function (result) {
+                $('#modalBox').modal('show');
+                $('#modalBody').html(result);
+                $("form").removeData("validator");
+                $("form").removeData("unobtrusiveValidation");
+                $.validator.unobtrusive.parse($('form'));
+            });
+        }
+    </script>
+}
