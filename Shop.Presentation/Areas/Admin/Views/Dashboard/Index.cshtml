@@ -1,8 +1,114 @@
-﻿
+﻿@model Shop.Data.ViewModels.Admin.DashboardViewModel
+
+@using System.Net
+
 @{
-    ViewData["Title"] = "Index";
+    var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Chart.Select(x => x.Label).ToList());
+    var YValues = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Chart.Select(x => x.Value).ToList());
+    ViewData["Title"] = "داشبورد";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Index</h1>
+<div class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-10 col-offset-1">
+    <div>
+        <h3>
+            <span>داشبورد مدیریت</span>
+        </h3>
+    </div>
 
+    <div class="margin-top-30">
+        <div class="row pt-md-5 mt-md-3 mb-5 mx-0 justify-content-between">
+            <div class="col-lg-4 col-md-6 col-sm-6 p-1">
+                <div class="card border-0">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <i class="fas fa-shopping-cart fa-5x text-success"></i>
+                            <div class="text-right text-secondary mr-3">
+                                <h2 class="text-md-small">@Model.UnSendOrders</h2>
+                                <p>سفارش در انتظار ارسال</p>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <a href="/Admin/Factor" class="text-primary mb-2">
+                        <div class="card-foorter text-right mr-3">
+                            <span class="float-right">بررسی</span>
+                            <i class="fas fa-arrow-left ml-3 float-left mt-1"></i>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 col-sm-6 p-1">
+                <div class="card border-0">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <i class="fas fa-headset fa-5x text-warning"></i>
+                            <div class="text-right text-secondary mr-3">
+                                <h2 class="text-md-small">@Model.UnSeenTickets</h2>
+                                <p>تیکت در انتظار پاسخگویی</p>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <a href="#" class="text-primary mb-2">
+                        <div class="card-foorter text-right mr-3">
+                            <span class="float-right">بررسی</span>
+                            <i class="fas fa-arrow-left ml-3 float-left mt-1"></i>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 col-sm-6 p-1">
+                <div class="card border-0">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <i class="far fa-comments fa-5x text-info"></i>
+                            <div class="text-right text-secondary mr-3">
+                                <h2 class="text-md-small">@Model.UnApprovedComments</h2>
+                                <p>نظر در انتظار تایید</p>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <a href="#" class="text-primary mb-2">
+                        <div class="card-foorter text-right mr-3">
+                            <span class="float-right">بررسی</span>
+                            <i class="fas fa-arrow-left ml-3 float-left mt-1"></i>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-5">
+            <canvas id="myChart"></canvas>
+        </div>
+    </div>
+</div>
+
+@section script {
+    <script src="~/lib/chartjs/dist/chart.min.js"></script>
+    <script>
+        const data = {
+            labels: @Html.Raw(XLabels),
+            datasets: [{
+                label: 'نمودار فروش در هفت روز گذشته',
+                data: @Html.Raw(YValues),
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0
+            }]
+        };
+
+        const config = {
+            type: 'line',
+            data: data,
+        };
+
+        var myChart = new Chart(
+            document.getElementById('myChart'),
+            config
+        );
+    </script>
+}

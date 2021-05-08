@@ -34,5 +34,11 @@ namespace Shop.Common.Extentions
             PersianCalendar pc = new PersianCalendar();
             return $"{pc.GetYear(dateTime)}/{pc.GetMonth(dateTime)}/{pc.GetDayOfMonth(dateTime)} {dateTime.Hour}:{dateTime.Minute}";
         }
+
+        public static string ToShamsiDate(this DateTime dateTime)
+        {
+            PersianCalendar pc = new PersianCalendar();
+            return $"{pc.GetYear(dateTime)}/{pc.GetMonth(dateTime)}/{pc.GetDayOfMonth(dateTime)}";
+        }
     }
 }

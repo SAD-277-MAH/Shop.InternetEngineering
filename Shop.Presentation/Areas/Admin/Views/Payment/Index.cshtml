@@ -1,0 +1,82 @@
+﻿@model IEnumerable<Shop.Data.ViewModels.Admin.PaymentAdminViewModel>
+
+@{
+    ViewData["Title"] = "پرداخت ها";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-10 col-offset-1">
+    <div>
+        <h3>
+            <span>پرداخت ها</span>
+        </h3>
+    </div>
+
+    <div class="margin-top-30">
+        @if (Model.Count() == 0)
+        {
+            <div class="alert alert-info" role="alert" style="margin: 0 auto; font-size: larger;">
+                <strong>توجه! </strong> هیچ پرداختی ثبت نشده است
+            </div>
+        }
+        else
+        {
+            <table class="table table-bordered table-hover" id="myTable">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FullName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Email)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.DateCreated)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Status)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Price)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.BankTrackingCode)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FullName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DateCreated)
+                            </td>
+                            <td>
+                                @if (item.Status)
+                                {
+                                    <span class="badge badge-success">موفق</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-warning">ناموفق</span>
+                                }
+                            </td>
+                            <td>
+                                @String.Format("{0:n0}", item.Price) تومان
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.BankTrackingCode)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>

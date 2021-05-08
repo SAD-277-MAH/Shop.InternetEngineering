@@ -74,6 +74,11 @@ namespace Shop.Common.Extentions
                 {
                     opt.MapFrom(src => src.DateCreated.ToShamsiDateTime());
                 });
+            CreateMap<Factor, PaymentAdminViewModel>()
+                .ForMember(dest => dest.DateCreated, opt =>
+                {
+                    opt.MapFrom(src => src.DateCreated.ToShamsiDateTime());
+                });
         }
     }
 }

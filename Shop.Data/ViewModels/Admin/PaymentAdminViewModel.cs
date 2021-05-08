@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Shop.Data.ViewModels.Admin
 {
-    public class FactorAdminViewModel
+    public class PaymentAdminViewModel
     {
         [Required]
         public string OrderId { get; set; }
@@ -22,17 +22,15 @@ namespace Shop.Data.ViewModels.Admin
         [Required(ErrorMessage = "مقدار {0} را وارد کنید")]
         public string DateCreated { get; set; }
 
+        [Display(Name = "وضعیت پرداخت")]
+        [Required(ErrorMessage = "مقدار {0} را وارد کنید")]
+        public bool Status { get; set; }
+
         [Display(Name = "مبلغ پرداختی")]
         [Required(ErrorMessage = "مقدار {0} را وارد کنید")]
         public int Price { get; set; }
 
         [Display(Name = "کد رهگیری بانک")]
         public string BankTrackingCode { get; set; }
-
-        [Display(Name = "وضعیت ارسال")]
-        public bool HasSent { get; set; }
-
-        [Display(Name = "کد رهگیری پست")]
-        public string PostTrackingCode { get; set; }
     }
 }
