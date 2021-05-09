@@ -27,7 +27,7 @@ namespace Shop.Presentation.Areas.Admin.Controllers
         #region Index
         public async Task<IActionResult> Index()
         {
-            var userFactors = await _db.FactorRepository.GetAsync(f => f.Status, f => f.OrderByDescending(o => o.HasSent).ThenByDescending(o => o.DateCreated), "Order");
+            var userFactors = await _db.FactorRepository.GetAsync(null, f => f.OrderByDescending(o => o.HasSent).ThenByDescending(o => o.DateCreated), "Order");
 
             var factors = _mapper.Map<List<PaymentAdminViewModel>>(userFactors);
             foreach (var factor in factors)

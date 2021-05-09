@@ -1,11 +1,15 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Data.Context;
+using Shop.Data.Models;
 using Shop.Data.ViewModels.Site;
 using Shop.Repo.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Shop.Presentation.Controllers
@@ -14,11 +18,13 @@ namespace Shop.Presentation.Controllers
     {
         private readonly IUnitOfWork<DatabaseContext> _db;
         private readonly IMapper _mapper;
+        private readonly UserManager<User> _userManager;
 
-        public HomeController(IUnitOfWork<DatabaseContext> db, IMapper mapper)
+        public HomeController(IUnitOfWork<DatabaseContext> db, IMapper mapper, UserManager<User> userManager)
         {
             _db = db;
             _mapper = mapper;
+            _userManager = userManager;
         }
 
         #region Index
@@ -57,6 +63,10 @@ namespace Shop.Presentation.Controllers
 
             var product = _mapper.Map<ProductPageViewModel>(resultProduct);
 
+            var comments = await _db.CommentRepository.GetAsync(c => c.ProductId == product.Id && c.Status == 1, o => o.OrderByDescending(c => c.DateCreated), "User");
+            product.Comments = _mapper.Map<List<SiteCommentViewModel>>(comments);
+
+            ViewBag.SendComment = false;
             return View(product);
         }
         #endregion
@@ -80,6 +90,37 @@ namespace Shop.Presentation.Controllers
             var result = _mapper.Map<List<ProductCartViewModel>>(products.OrderByDescending(p => p.DateCreated));
 
             return View(result);
+        }
+        #endregion
+
+        #region SendComment
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SendComment(string id, CommentFormViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                string userId = (await _userManager.FindByNameAsync(User.Identity.Name)).Id;
+                var comment = new Comment()
+                {
+                    ProductId = id,
+                    UserId = userId,
+                    Text = viewModel.Text,
+                    Status = 0
+                };
+                await _db.CommentRepository.AddAsync(comment);
+                await _db.SaveAsync();
+                ViewBag.SendComment = true;
+            }
+            else
+            {
+                ViewBag.SendComment = false;
+            }
+
+            var productName = (await _db.ProductRepository.GetAsync(id))?.Name;
+            string title = Regex.Replace(Regex.Replace(productName.Replace(" ", "-").Trim().ToLower(), "[^\\w]", "-"), "[-]{2,}", "-");
+            return Redirect("/Product/" + id + "/" + title);
         }
         #endregion
     }

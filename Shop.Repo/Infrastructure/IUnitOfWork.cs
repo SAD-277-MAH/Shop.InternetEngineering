@@ -27,6 +27,7 @@ namespace Shop.Repo.Infrastructure
         IOrderDetailRepository OrderDetailRepository { get; }
         ICouponOrderRepository CouponOrderRepository { get; }
         IFactorRepository FactorRepository { get; }
+        ICommentRepository CommentRepository { get; }
 
         bool Save();
         Task<bool> SaveAsync();

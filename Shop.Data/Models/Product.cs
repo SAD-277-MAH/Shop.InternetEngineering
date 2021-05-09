@@ -59,5 +59,7 @@ namespace Shop.Data.Models
         public virtual ICollection<CouponProduct> CouponProducts { get; set; }
 
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }

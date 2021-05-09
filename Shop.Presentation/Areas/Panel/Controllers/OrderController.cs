@@ -230,7 +230,7 @@ namespace Shop.Presentation.Areas.Panel.Controllers
             {
                 var factor = new Factor()
                 {
-                    Status = true,
+                    Status = false,
                     Price = order.OrderSum - order.Discount + 20000,
                     OrderId = order.Id,
                     HasSent = false

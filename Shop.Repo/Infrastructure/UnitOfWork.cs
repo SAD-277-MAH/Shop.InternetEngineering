@@ -240,6 +240,19 @@ namespace Shop.Repo.Infrastructure
                 return factorRepository;
             }
         }
+
+        private ICommentRepository commentRepository;
+        public ICommentRepository CommentRepository
+        {
+            get
+            {
+                if (commentRepository == null)
+                {
+                    commentRepository = new CommentRepository(_db);
+                }
+                return commentRepository;
+            }
+        }
         #endregion
 
         #region Save

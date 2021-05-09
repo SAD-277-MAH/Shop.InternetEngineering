@@ -26,5 +26,7 @@ namespace Shop.Data.ViewModels.Site
 
 
         public List<ProductImageViewModel> ProductImages { get; set; }
+
+        public List<SiteCommentViewModel> Comments { get; set; }
     }
 }

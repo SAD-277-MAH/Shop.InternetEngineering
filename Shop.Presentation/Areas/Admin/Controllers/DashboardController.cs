@@ -32,7 +32,7 @@ namespace Shop.Presentation.Areas.Admin.Controllers
             viewModel.UnSendOrders = factors.Where(f => f.Status && !f.HasSent).Count();
             //TODO -------------------
             viewModel.UnSeenTickets = 10;
-            viewModel.UnApprovedComments = 15;
+            viewModel.UnApprovedComments = (await _db.CommentRepository.GetAsync(c => c.Status == 0, null, string.Empty)).Count();
 
             DateTime today = DateTime.Now;
             for (int i = 6; i >= 0; i--)

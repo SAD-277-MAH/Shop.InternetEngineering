@@ -85,7 +85,14 @@
                 </ul>
                 <hr />
                 <div class="card_area d-flex align-items-center">
-                    <a href="/Panel/Order/AddToOrder/@Model.Id" class="btn btn-success">افزودن به سبد خرید</a>
+                    @if (Model.Quantity > 0)
+                    {
+                        <a href="/Panel/Order/AddToOrder/@Model.Id" class="btn btn-success">افزودن به سبد خرید</a>
+                    }
+                    else
+                    {
+                        <p class="text-danger">موجودی کالا به اتمام رسیده است</p>
+                    }
                 </div>
             </div>
         </div>
@@ -118,57 +125,72 @@
             <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
                 <div class="row">
                     <div class="col-lg-6">
+                        @if (ViewBag.SendComment != null && ViewBag.SendComment)
+                        {
+                            <div class="form-group">
+                                <div class="alert alert-success text-center">
+                                    <h4 class="text-center">
+                                        نظر شما با موفقیت ثبت شد و پس تأیید مدیر نمایش داده خواهد شد
+                                    </h4>
+                                </div>
+                            </div>
+                        }
                         <div class="comment_list">
-                            <div class="review_item">
-                                <div class="media pt-2 _commentHeader">
-                                    <div class="d-flex">
-                                        <img src="/images/logo_enmad.jpg" alt="" class="_comment-image">
+                            @if (Model.Comments.Count > 0)
+                            {
+                                @foreach (var comment in Model.Comments)
+                                {
+                                    <div class="review_item">
+                                        <div class="media pt-2 _commentHeader">
+                                            <div class="d-flex">
+                                                <img src="@comment.PhotoUrl.Replace("/wwwroot", "")" alt="" class="_comment-image">
+                                            </div>
+                                            <div class="media-body" dir="rtl" style="text-align: start;">
+                                                <h4 class="float-right">@comment.FullName</h4>
+                                                <h6 class="float-left">@comment.Date</h6>
+                                            </div>
+                                        </div>
+                                        <p class="text-right py-2 pr-4">@comment.Text</p>
                                     </div>
-                                    <div class="media-body" dir="rtl" style="text-align: start;">
-                                        <h4 class="float-right">صادق مهدیان</h4>
-                                        <h6 class="float-left">12/6/1400 12:30</h6>
-                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="alert alert-info text-right" role="alert" style="margin: 0 auto; font-size: larger;">
+                                    نظری برای این محصول ثبت نشده است
                                 </div>
-                                <p class="text-right py-2 pr-4">این کامنت من است.</p>
-                            </div>
-                            <div class="review_item">
-                                <div class="media pt-2 _commentHeader">
-                                    <div class="d-flex">
-                                        <img src="/images/keyboard.jpg" alt="" class="_comment-image">
-                                    </div>
-                                    <div class="media-body" dir="rtl" style="text-align: start;">
-                                        <h4 class="float-right">علی مهدیان</h4>
-                                        <h6 class="float-left">12/6/1400 12:30</h6>
-                                    </div>
-                                </div>
-                                <p class="text-right py-2 pr-4">
-                                    این کامنت من است.این کامنت من است.این کامنت من است.این کامنت من است.این
-                                    کامنت من
-                                    است.
-                                    این کامنت من است.این کامنت من است.این کامنت من است.این کامنت من است.
-                                    این کامنت من است.این کامنت من است.این کامنت من است.
-                                </p>
-                            </div>
+                            }
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="review_box">
-                            <h4 class="text-center mb-3">ثبت نظر</h4>
-                            <form class="row contact_form" action="" method="post">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <h4 class="text-center mb-3">ثبت نظر</h4>
+                                <form action="/Home/SendComment/@Model.Id" method="post" class="row contact_form">
+                                    @Html.AntiForgeryToken()
 
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <textarea class="form-control" name="message" id="message" rows="5"
-                                                  placeholder="متن پیام"></textarea>
+                                    <div asp-validation-summary="ModelOnly" class="text-danger validation-error"></div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <textarea class="form-control" name="Text" id="message" rows="5" placeholder="متن پیام" required></textarea>
+                                            <span class="text-danger field-validation-valid" data-valmsg-for="Text" data-valmsg-replace="true"></span>
+                                        </div>
                                     </div>
+                                    <div class="col-md-12 text-center">
+                                        <button type="submit" value="submit"
+                                                class="btn btn-success btn-block">
+                                            ارسال
+                                        </button>
+                                    </div>
+                                </form>
+                            }
+                            else
+                            {
+                                <div class="alert alert-warning text-right" role="alert" style="margin: 0 auto; font-size: larger;">
+                                    برای ثبت نظر، باید وارد سایت شوید
                                 </div>
-                                <div class="col-md-12 text-center">
-                                    <button type="submit" value="submit"
-                                            class="btn btn-success btn-block">
-                                        ارسال
-                                    </button>
-                                </div>
-                            </form>
+                            }
                         </div>
                     </div>
                 </div>

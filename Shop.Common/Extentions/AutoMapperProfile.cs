@@ -91,6 +91,37 @@ namespace Shop.Common.Extentions
                     opt.MapFrom(src => src.Category.Name);
                 });
             CreateMap<ProductImage, ProductImageViewModel>();
+
+            CreateMap<Comment, SiteCommentViewModel>()
+                .ForMember(dest => dest.FullName, opt =>
+                {
+                    opt.MapFrom(src => src.User.FullName);
+                })
+                .ForMember(dest => dest.PhotoUrl, opt =>
+                {
+                    opt.MapFrom(src => src.User.PhotoUrl);
+                })
+                .ForMember(dest => dest.Date, opt =>
+                {
+                    opt.MapFrom(src => src.DateCreated.ToShamsiDateTime());
+                });
+            CreateMap<Comment, CommentViewModel>()
+                .ForMember(dest => dest.Date, opt =>
+                {
+                    opt.MapFrom(src => src.DateCreated.ToShamsiDateTime());
+                })
+                .ForMember(dest => dest.FullName, opt =>
+                {
+                    opt.MapFrom(src => src.User.FullName);
+                })
+                .ForMember(dest => dest.Email, opt =>
+                {
+                    opt.MapFrom(src => src.User.Email);
+                })
+                .ForMember(dest => dest.ProductName, opt =>
+                {
+                    opt.MapFrom(src => src.Product.Name);
+                });
         }
     }
 }
