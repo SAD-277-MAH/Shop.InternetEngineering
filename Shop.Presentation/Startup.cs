@@ -102,6 +102,7 @@ namespace Shop.Presentation
 
             services.AddScoped<AdminLayoutScope>();
             services.AddScoped<PanelLayoutScope>();
+            services.AddScoped<HomeLayoutScope>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

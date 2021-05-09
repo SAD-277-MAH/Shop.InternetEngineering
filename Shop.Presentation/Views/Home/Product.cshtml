@@ -1,0 +1,268 @@
+﻿@model Shop.Data.ViewModels.Site.ProductPageViewModel
+
+@{
+    ViewData["Title"] = "جزئیات محصول";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="container col-lg-12 col-md-12 col-sm-12">
+                <div class="mySlides">
+                    <img src="@Model.PhotoUrl.Replace("/wwwroot", "")" alt="product" style="width: 80%;" />
+                </div>
+                @foreach (var image in Model.ProductImages)
+                {
+                    <div class="mySlides">
+                        <img src="@image.PhotoUrl.Replace("/wwwroot", "")" alt="product" style="width: 80%;" />
+                    </div>
+                }
+
+                <div style="margin-top: 10px;">
+                    <div class="column">
+                        <img src="@Model.PhotoUrl.Replace("/wwwroot", "")" alt="product" class="demo cursor"
+                             style="width: 100%;" onclick="currentSlides(1)" />
+                    </div>
+                    @for (int i = 0; i < Model.ProductImages.Count; i++)
+                    {
+                        <div class="column">
+                            <img src="@Model.ProductImages[i].PhotoUrl.Replace("/wwwroot", "")" alt="product" class="demo cursor"
+                                 style="width: 100%;" onclick="currentSlides(@(i+2))" />
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5 offset-lg-1">
+            <div class="s_product_text" style="text-align: start;">
+                <h3>@Model.Name</h3>
+                <hr />
+                <h2 class="mt-4">
+                    قیمت:
+                    <strong>
+                        @if (Model.Discount > 0)
+                        {
+                            <div class="div-price">
+                                <span class="real-price">
+                                    @String.Format("{0:n0}", Model.Price) تومان
+                                </span>
+                                @{
+                                    int percent = Convert.ToInt32(((double)Model.Discount / (double)Model.Price) * 100);
+                                    if (percent == 0)
+                                    {
+                                        percent = 1;
+                                    }
+                                }
+                                <span class="percent-off">@percent %</span>
+                            </div>
+                            <div class="div-price">
+                                <span class="offer-price">
+                                    @String.Format("{0:n0}", (int)(Model.Price - Model.Discount)) تومان
+                                </span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="div-price">
+                                <span class="price-item">
+                                    @String.Format("{0:n0}", Model.Price)
+                                </span>
+                                <span class="price-item">تومان</span>
+                            </div>
+                        }
+                    </strong>
+                </h2>
+                <ul class="list mb-5">
+                    <li class="mt-3">
+                        دسته بندی:
+                        <strong>@Model.CategoryName</strong>
+                    </li>
+                    <li class="mt-3">
+                        برند:
+                        <strong>@Model.BrandName</strong>
+                    </li>
+                </ul>
+                <hr />
+                <div class="card_area d-flex align-items-center">
+                    <a href="/Panel/Order/AddToOrder/@Model.Id" class="btn btn-success">افزودن به سبد خرید</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<section class="product_description_area">
+    <div class="container">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="btn btn-primary active" id="home-tab" data-toggle="tab" href="#home" role="tab"
+                   aria-controls="home" aria-selected="true">توضیحات</a>
+            </li>
+            <li class="nav-item">
+                <a class="btn btn-primary" id="contact-tab" data-toggle="tab" href="#contact" role="tab"
+                   aria-controls="contact" aria-selected="false">نظرات</a>
+            </li>
+            <li class="nav-item">
+                <a class="btn btn-primary" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                   aria-controls="profile" aria-selected="false">جزئیات</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent" dir="rtl">
+            <div class="tab-pane fade active show" id="home" role="tabpanel" aria-labelledby="home-tab" dir="rtl">
+                <p style="text-align: start;">
+                    @Model.Description
+                </p>
+
+            </div>
+
+            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="comment_list">
+                            <div class="review_item">
+                                <div class="media pt-2 _commentHeader">
+                                    <div class="d-flex">
+                                        <img src="/images/logo_enmad.jpg" alt="" class="_comment-image">
+                                    </div>
+                                    <div class="media-body" dir="rtl" style="text-align: start;">
+                                        <h4 class="float-right">صادق مهدیان</h4>
+                                        <h6 class="float-left">12/6/1400 12:30</h6>
+                                    </div>
+                                </div>
+                                <p class="text-right py-2 pr-4">این کامنت من است.</p>
+                            </div>
+                            <div class="review_item">
+                                <div class="media pt-2 _commentHeader">
+                                    <div class="d-flex">
+                                        <img src="/images/keyboard.jpg" alt="" class="_comment-image">
+                                    </div>
+                                    <div class="media-body" dir="rtl" style="text-align: start;">
+                                        <h4 class="float-right">علی مهدیان</h4>
+                                        <h6 class="float-left">12/6/1400 12:30</h6>
+                                    </div>
+                                </div>
+                                <p class="text-right py-2 pr-4">
+                                    این کامنت من است.این کامنت من است.این کامنت من است.این کامنت من است.این
+                                    کامنت من
+                                    است.
+                                    این کامنت من است.این کامنت من است.این کامنت من است.این کامنت من است.
+                                    این کامنت من است.این کامنت من است.این کامنت من است.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="review_box">
+                            <h4 class="text-center mb-3">ثبت نظر</h4>
+                            <form class="row contact_form" action="" method="post">
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <textarea class="form-control" name="message" id="message" rows="5"
+                                                  placeholder="متن پیام"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 text-center">
+                                    <button type="submit" value="submit"
+                                            class="btn btn-success btn-block">
+                                        ارسال
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <div class="table-responsive">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <h5>طول</h5>
+                                </td>
+                                <td>
+                                    <h5>128mm</h5>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h5>عرض</h5>
+                                </td>
+                                <td>
+                                    <h5>508mm</h5>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h5>ارتفاع</h5>
+                                </td>
+                                <td>
+                                    <h5>85mm</h5>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h5>وزن</h5>
+                                </td>
+                                <td>
+                                    <h5>52گرم</h5>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h5>اریابی کیفیت</h5>
+                                </td>
+                                <td>
+                                    <h5>بله</h5>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section script {
+    <script>
+        //Gallery Scripts
+        var slideIndex = 1;
+        showSlides(slideIndex);
+
+        function plusSlides(n) {
+            showSlides(slideIndex + n)
+        }
+
+        function currentSlides(n) {
+            showSlides(slideIndex = n);
+        }
+
+        function showSlides(n) {
+            var i;
+            var slides = document.getElementsByClassName("mySlides");
+            var dots = document.getElementsByClassName("demo");
+
+            if (n > slides.length) {
+                slideIndex = 1;
+            }
+
+            if (n < 1) {
+                slideIndex = slides.length;
+            }
+
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+
+            slides[slideIndex - 1].style.display = "block";
+            dots[slideIndex - 1].className += " active";
+        }
+    </script>
+}

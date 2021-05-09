@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Shop.Data.ViewModels.Site.ProductCartViewModel>
+
+@using System.Text.RegularExpressions;
+
+@{
+    ViewData["Title"] = "لیست محصولات";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+<div class="row p-5">
+    @foreach (var product in Model)
+    {
+        string title = Regex.Replace(Regex.Replace(product.Name.Replace(" ", "-").Trim().ToLower(), "[^\\w]", "-"), "[-]{2,}", "-");
+        <div class="col-md-3 mb-3">
+            <div class="div-item-bs">
+                <a href="/Product/@product.Id/@title" target="_blank" class="itembestseller">
+                    <div class="d-img-bs">
+                        <img src="@product.PhotoUrl.Replace("/wwwroot", "")" alt="product" class="img-item">
+                    </div>
+                    <div class="pitem">
+                        <p class="p-item">@product.Name</p>
+                        @if (product.Discount > 0)
+                        {
+                            <div class="div-price">
+                                <span class="real-price">
+                                    @String.Format("{0:n0}", product.Price) تومان
+                                </span>
+                                @{
+                                    int percent = Convert.ToInt32(((double)product.Discount / (double)product.Price) * 100);
+                                    if (percent == 0)
+                                    {
+                                        percent = 1;
+                                    }
+                                }
+                                <span class="percent-off">@percent %</span>
+                            </div>
+                            <div class="div-price">
+                                <span class="offer-price">
+                                    @String.Format("{0:n0}", (int)(product.Price - product.Discount)) تومان
+                                </span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="div-price">
+                                <span class="price-item">
+                                    @String.Format("{0:n0}", product.Price)
+                                </span>
+                                <span class="price-item">تومان</span>
+                            </div>
+                        }
+                    </div>
+                </a>
+            </div>
+        </div>
+    }
+</div>
+

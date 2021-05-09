@@ -1,0 +1,400 @@
+﻿@model Shop.Data.ViewModels.Site.HomePageViewModel
+
+@using System.Text.RegularExpressions;
+
+@{
+    ViewData["Title"] = "صفحه اصلی";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+<section class="container-fluid padding_dd">
+    <div class="clr-wh">
+        <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                <div class="center-div">
+                    <div class="images_box">
+                        <figure><img src="/images/HomePage/all.png"></figure>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                <div class="text-bg">
+                    <div class="center-div">
+                        <h1>فروشگاه لوازم جانبی</h1>
+                        <p class="p-inf">یک خرید مطمئن و باصرفه ...</p>
+                        <p class="po">انواع مانیتور ، کیبورد ، ماوس و ...</p>
+                        <div class="div-inf">
+                            <div class="div-sub-inf">
+                                <a href="./shop.html" class="a-inf">
+                                    <span class="clr-pd">مشاهده فروشگاه</span>
+                                    <i class="fas fa-chevron-left" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="category">
+    <div class="container div-category">
+        <div class="row">
+            <div class="col div-section">
+                <p class="p-class p-gray">دسته بندی محصولات</p>
+            </div>
+        </div>
+        <div class="row justify-content-around">
+            @foreach (var category in Model.Categories)
+            {
+                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
+                    <a href="/Home/Shop?category=@category.Name" class="text-center">
+                        <div class="col img-category">
+                            <span class="@category.Icon fa-4x text-primary"></span>
+                        </div>
+                        <div class="col">
+                            <p class="p-category">@category.Name</p>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<section class="div-discount row">
+    <div class="col-xl-2 col-lg-12 col-md-12 col-sm-12 discount-text mt-4">
+        <p class="p-discount"> پیشنهاد های ویژه</p>
+        <span class="badge badge-warning rounded-circle text-danger p-4">
+            <span class="fas fa-percent fa-4x"></span>
+        </span>
+    </div>
+    <div id="slider" class="col-xl-10 col-12">
+        <a href="#s" class="control_next">
+            <i class="fas fa-chevron-right" aria-hidden="true"></i>
+        </a>
+        <a href="#s" class="control_prev">
+            <i class="fas fa-chevron-left" aria-hidden="true"></i>
+        </a>
+
+        <div id="itemsli" class="ml-0">
+            @foreach (var product in Model.MostDiscountProducts)
+            {
+                string title = Regex.Replace(Regex.Replace(product.Name.Replace(" ", "-").Trim().ToLower(), "[^\\w]", "-"), "[-]{2,}", "-");
+                <div class="dii">
+                    <a href="/Product/@product.Id/@title" target="_blank" class="itembestseller">
+                        <div class="d-img-bs">
+                            <img src="@product.PhotoUrl.Replace("/wwwroot", "")" alt="product" class="img-item">
+                        </div>
+                        <div class="pitem">
+                            <p class="p-item">@product.Name</p>
+                            @if (product.Discount > 0)
+                            {
+                                <div class="div-price">
+                                    <span class="real-price">
+                                        @String.Format("{0:n0}", product.Price) تومان
+                                    </span>
+                                    @{
+                                        int percent = Convert.ToInt32(((double)product.Discount / (double)product.Price) * 100);
+                                        if (percent == 0)
+                                        {
+                                            percent = 1;
+                                        }
+                                    }
+                                    <span class="percent-off">@percent %</span>
+                                </div>
+                                <div class="div-price">
+                                    <span class="offer-price">
+                                        @String.Format("{0:n0}", (int)(product.Price - product.Discount)) تومان
+                                    </span>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="div-price">
+                                    <span class="price-item">
+                                        @String.Format("{0:n0}", product.Price)
+                                    </span>
+                                    <span class="price-item">تومان</span>
+                                </div>
+                            }
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<section class="bestSellers">
+    <div class="div-Bestsellers div-section">
+        <p class="p-class p-start">محصولات پرفروش</p>
+    </div>
+    <div id="slider-bs">
+        <a href="#s" class="controlbs_next">
+            <i class="fas fa-chevron-right" aria-hidden="true"></i>
+        </a>
+        <a href="#s" class="controlbs_prev">
+            <i class="fas fa-chevron-left" aria-hidden="true"></i>
+        </a>
+
+        <div id="slideshow-bs" class="ml-0">
+            @foreach (var product in Model.MostPurchasedProducts)
+            {
+                string title = Regex.Replace(Regex.Replace(product.Name.Replace(" ", "-").Trim().ToLower(), "[^\\w]", "-"), "[-]{2,}", "-");
+                <div class="div-item-bs">
+                    <a href="/Product/@product.Id/@title" target="_blank" class="itembestseller">
+                        <div class="d-img-bs">
+                            <img src="@product.PhotoUrl.Replace("/wwwroot", "")" alt="product" class="img-item">
+                        </div>
+                        <div class="pitem">
+                            <p class="p-item">@product.Name</p>
+                            @if (product.Discount > 0)
+                            {
+                                <div class="div-price">
+                                    <span class="real-price">
+                                        @String.Format("{0:n0}", product.Price) تومان
+                                    </span>
+                                    @{
+                                        int percent = Convert.ToInt32(((double)product.Discount / (double)product.Price) * 100);
+                                        if (percent == 0)
+                                        {
+                                            percent = 1;
+                                        }
+                                    }
+                                    <span class="percent-off">@percent %</span>
+                                </div>
+                                <div class="div-price">
+                                    <span class="offer-price">
+                                        @String.Format("{0:n0}", (int)(product.Price - product.Discount)) تومان
+                                    </span>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="div-price">
+                                    <span class="price-item">
+                                        @String.Format("{0:n0}", product.Price)
+                                    </span>
+                                    <span class="price-item">تومان</span>
+                                </div>
+                            }
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<section class="newProduct">
+    <div class="div-newProduct div-section">
+        <p class="p-class p-start">جدیدترین محصولات</p>
+    </div>
+    <div id="slider-np">
+        <a href="#s" class="controlnp_next">
+            <i class="fas fa-chevron-right" aria-hidden="true"></i>
+        </a>
+        <a href="#s" class="controlnp_prev">
+            <i class="fas fa-chevron-left" aria-hidden="true"></i>
+        </a>
+
+        <div id="slideshow-np" class="ml-0">
+            @foreach (var product in Model.MostRecentProducts)
+            {
+                string title = Regex.Replace(Regex.Replace(product.Name.Replace(" ", "-").Trim().ToLower(), "[^\\w]", "-"), "[-]{2,}", "-");
+                <div class="div-item-np">
+                    <a href="/Product/@product.Id/@title" target="_blank" class="itembestseller">
+                        <div class="d-img-bs">
+                            <img src="@product.PhotoUrl.Replace("/wwwroot", "")" alt="product" class="img-item">
+                        </div>
+                        <div class="pitem">
+                            <p class="p-item">@product.Name</p>
+                            @if (product.Discount > 0)
+                            {
+                                <div class="div-price">
+                                    <span class="real-price">
+                                        @String.Format("{0:n0}", product.Price) تومان
+                                    </span>
+                                    @{
+                                        int percent = Convert.ToInt32(((double)product.Discount / (double)product.Price) * 100);
+                                        if (percent == 0)
+                                        {
+                                            percent = 1;
+                                        }
+                                    }
+                                    <span class="percent-off">@percent %</span>
+                                </div>
+                                <div class="div-price">
+                                    <span class="offer-price">
+                                        @String.Format("{0:n0}", (int)(product.Price - product.Discount)) تومان
+                                    </span>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="div-price">
+                                    <span class="price-item">
+                                        @String.Format("{0:n0}", product.Price)
+                                    </span>
+                                    <span class="price-item">تومان</span>
+                                </div>
+                            }
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+@section script {
+    <script>
+        // for slideshow :
+
+        var slideCount = $(".dii").length;
+
+        var slideWidth = $(".dii").width();
+
+        var slideHeight = $(".dii").height();
+
+        var sliderUlWidth = slideCount * slideWidth;
+
+        $("#slider").css({
+            width: slideWidth * 4,
+            height: slideHeight
+        });
+
+        $("#itemsli").css({
+            width: sliderUlWidth,
+            marginLeft: -slideWidth
+        });
+
+        $(".dii:first-child").appendTo("#itemsli");
+
+        function moveLeft() {
+            $("#itemsli").animate({
+                left: +slideWidth
+            }, 500, function () {
+                $(".dii:last-child").prependTo("#itemsli");
+                $("#itemsli").css('left', '0');
+            });
+        }
+
+        function moveRight() {
+            $("#itemsli").animate({
+                left: -slideWidth
+            }, 500, function () {
+                $(".dii:first-child").appendTo("#itemsli");
+                $("#itemsli").css('left', '0');
+            });
+        }
+
+        $("a.control_next").click(function (e) {
+            moveRight();
+        });
+
+        $("a.control_prev").click(function (e) {
+            moveLeft();
+        });
+
+        // bs shildeshow :
+
+        var slideBSCount = $(".div-item-bs").length;
+
+        var slideBSWidth = $(".div-item-bs").width();
+
+        var slideBSHeight = $(".div-item-bs").height();
+
+        var sliderUlBSWidth = slideBSCount * slideBSWidth;
+
+        $("#slider-bs").css({
+            width: "100%",
+            height: slideBSHeight
+        });
+
+        $("#slideshow-bs").css({
+            width: sliderUlBSWidth,
+            marginLeft: -slideBSWidth
+        });
+
+        $(".div-item-bs:first-child").appendTo("#slideshow-bs");
+
+        function moveLeftBS() {
+            $("#slideshow-bs").animate({
+                left: +slideBSWidth
+            }, 500, function () {
+                $(".div-item-bs:last-child").prependTo("#slideshow-bs");
+                $("#slideshow-bs").css('left', '0');
+            });
+        }
+
+        function moveRightBS() {
+            $("#slideshow-bs").animate({
+                left: -slideBSWidth
+            }, 500, function () {
+                $(".div-item-bs:first-child").appendTo("#slideshow-bs");
+                $("#slideshow-bs").css('left', '0');
+            });
+        }
+
+        $("a.controlbs_next").click(function (e) {
+            moveRightBS();
+        });
+
+        $("a.controlbs_prev").click(function (e) {
+            moveLeftBS();
+        });
+
+
+        // np shildeshow :
+
+        var slideNPCount = $(".div-item-np").length;
+
+        var slideNPWidth = $(".div-item-np").width();
+
+        var slideNPHeight = $(".div-item-np").height();
+
+        var sliderUlNPWidth = slideNPCount * slideNPWidth;
+
+        $("#slider-np").css({
+            width: "100%",
+            height: slideNPHeight
+        });
+
+        $("#slideshow-np").css({
+            width: sliderUlNPWidth,
+            marginLeft: -slideNPWidth
+        });
+
+        $(".div-item-np:first-child").appendTo("#slideshow-np");
+
+        function moveLeftNP() {
+            $("#slideshow-np").animate({
+                left: +slideNPWidth
+            }, 500, function () {
+                $(".div-item-np:last-child").prependTo("#slideshow-np");
+                $("#slideshow-np").css('left', '0');
+            });
+        }
+
+        function moveRightNP() {
+            $("#slideshow-np").animate({
+                left: -slideNPWidth
+            }, 500, function () {
+                $(".div-item-np:first-child").appendTo("#slideshow-np");
+                $("#slideshow-np").css('left', '0');
+            });
+        }
+
+        $("a.controlnp_next").click(function (e) {
+            moveRightNP();
+        });
+
+        $("a.controlnp_prev").click(function (e) {
+            moveLeftNP();
+        });
+    </script>
+}

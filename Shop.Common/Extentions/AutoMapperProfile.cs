@@ -2,6 +2,7 @@
 using Shop.Data.Models;
 using Shop.Data.ViewModels.Admin;
 using Shop.Data.ViewModels.Panel;
+using Shop.Data.ViewModels.Site;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -79,6 +80,17 @@ namespace Shop.Common.Extentions
                 {
                     opt.MapFrom(src => src.DateCreated.ToShamsiDateTime());
                 });
+
+            CreateMap<Category, SiteCategoryViewModel>();
+            CreateMap<Social, SiteSocialViewModel>();
+            CreateMap<License, SiteLicenseViewModel>();
+            CreateMap<Product, ProductCartViewModel>();
+            CreateMap<Product, ProductPageViewModel>()
+                .ForMember(dest => dest.CategoryName, opt =>
+                {
+                    opt.MapFrom(src => src.Category.Name);
+                });
+            CreateMap<ProductImage, ProductImageViewModel>();
         }
     }
 }

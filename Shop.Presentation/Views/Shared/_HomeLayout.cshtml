@@ -1,0 +1,255 @@
+﻿@using Shop.Services.Scopes
+@using Shop.Data.ViewModels.Site
+
+@inject HomeLayoutScope scope
+
+@{
+    List<SiteCategoryViewModel> categories = await scope.GetCategories();
+    List<SiteSocialViewModel> socials = await scope.GetSocials();
+    List<SiteLicenseViewModel> licenses = await scope.GetLicenses();
+}
+
+<!DOCTYPE html>
+
+<html lang="fa">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/fontawesome/dist/css/all.min.css" rel="stylesheet" />
+    <link href="~/css/style.css" rel="stylesheet" />
+
+    @*<link rel="shortcut icon" href="./images/favicon-logo.png" type="images/png">*@
+
+    <title>@ViewBag.Title | فروشگاه اینترنتی</title>
+</head>
+
+<body>
+    <div class="container-fluid div-starter">
+        <header class="row navbar navbar-expand-lg hi">
+            <button class="navbar-toggler button-toggle" type="button" data-toggle="collapse"
+                    data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <i class="fas fa-bars" aria-hidden="true"></i>
+            </button>
+            <a class="navbar-brand a-logo" href="/">
+                <img id="img-logo" width="200" height="70" src="/images/HomePage/shop-logo.png" alt="فروشگاه لوازم جانبی">
+            </a>
+            <div>
+
+            </div>
+            <div class="collapse navbar-collapse flo" id="navbarCollapse">
+                <form action="/Home/Shop" method="get" class="form-inline form-search row col-lg-7">
+                    <input name="search" class="form-control input-search col-11" type="text" placeholder="جستجوی محصولات ..." aria-label="Search">
+                    <button class="btn-search col-1 pt-2 text-secondary" type="submit">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                    </button>
+                </form>
+                <div class="row justify-content-around float-left mr-5 _user">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a href="/Admin" class="btn btn-outline-primary col-md-6">
+                                <span class="fas fa-user ml-2"></span> پنل مدیریت
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="/Panel" class="btn btn-outline-primary col-md-6">
+                                <span class="fas fa-user ml-2"></span> پنل کاربری
+                            </a>
+                            <a href="/Panel/Order" class="btn btn-outline-primary col-md-5">
+                                <span class="fas fa-shopping-cart  ml-2"></span>
+                                سبد خرید
+                            </a>
+                        }
+                    }
+                    else
+                    {
+                        <a href="/Login" class="btn btn-outline-primary col-md-6">
+                            <span class="fas fa-user ml-2"></span> ورود / ثبت نام
+                        </a>
+                    }
+
+
+                </div>
+            </div>
+        </header>
+        <nav class="navbar navbar-expand-lg">
+            <div class="row collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav navbar-light">
+                    <li class="nav-item mr-5 ml-5">
+                        <div class="dropdown show li-nav">
+                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-list" aria-hidden="true"></i>
+                                <span class="mr-2">دسته بندی محصولات</span>
+                            </a>
+
+                            <div class="dropdown-menu div-show" aria-labelledby="dropdownMenuLink">
+                                @foreach (var category in categories)
+                                {
+                                    <a href="/Home/Shop?category=@category.Name" class="dropdown-item">
+                                        <i class="@category.Icon" aria-hidden="true"></i>
+                                        <span class="span-margin">@category.Name</span>
+                                    </a>
+                                    <hr />
+                                }
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item li-nav">
+                        <a href="/" class="a-mainpage">
+                            <span> صفحه اصلی</span>
+                        </a>
+                    </li>
+                    <li class="nav-item li-nav">
+                        <a href="#" class="a-market">
+                            <span>فروشگاه</span>
+                        </a>
+                    </li>
+                    <li class="nav-item li-nav">
+                        <a href="#" class="a-contact">
+                            <span> درباره ما</span>
+                        </a>
+                    </li>
+                    <li class="nav-item li-nav">
+                        <a href="#" class="a-contact">
+                            <span>تماس با ما</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <main class="container-fluid">
+        @RenderBody()
+    </main>
+
+    <footer>
+        <section class="sec-fig">
+            <div class="container features">
+                <div class="row div-features">
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="single-features bn">
+                            <div class="f-icon">
+                                <img class="im" src="/images/HomePage/free-delivery.png" alt="">
+                            </div>
+                            <h6 class="p-features">حمل رایگان</h6>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="single-features">
+                            <div class="f-icon">
+                                <img class="im" src="/images/HomePage/return-policy.png" alt="">
+                            </div>
+                            <h6 class="p-features">ضمانت بازگشت کالا</h6>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="single-features">
+                            <div class="f-icon">
+                                <img class="im" src="/images/HomePage/support.png" alt="">
+                            </div>
+                            <h6 class="p-features">پشتیانی 24 ساعته</h6>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="single-features">
+                            <div class="f-icon">
+                                <img class="im" src="/images/HomePage/secure-payment.png" alt="">
+                            </div>
+                            <h6 class="p-features">پرداخت امن</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-3 col-md-3">
+                    <div class="list-group">
+                        <div class="footer_group_item">
+                            <p class="p-title">
+                                دسترسی سریع :
+                            </p>
+                        </div>
+                        <a href="/" class="footer-item">صفحه اصلی </a>
+                        <a href="#" class="footer-item">فروشگاه </a>
+                        <a href="#" class="footer-item">تماس با ما </a>
+                        <a href="#" class="footer-item">درباره ما </a>
+
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3">
+                    <div class="list-group">
+                        <div class="footer_group_item">
+                            <p class="p-title">
+                                خدمات مشتریان :
+                            </p>
+                        </div>
+                        <a href="#" class="footer-item">سوالات متداول </a>
+                        <a href="/Login" class="footer-item">ورود به حساب </a>
+                        <a href="/Panel/Factor" class="footer-item">سوابق سفارشات </a>
+                        <a href="#" class="footer-item">پیگیری سفارش </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3" style=" text-align: center;">
+                    <div class="list-group">
+                        <div class="footer_group_item">
+                            <p class="p-title">
+                                ارتباط با ما :
+                            </p>
+                        </div>
+
+                        @foreach (var social in socials)
+                        {
+                            <a href="@social.Link" class="a-contactwith" target="_blank">
+                                <span>@social.Name</span>
+                                <i class="@social.Icon" style="color: @social.Color;"></i>
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-8 col-md-8 col-sm-8 div-txt-ls">
+                    <p>فروشگاه اینترنتی لوازم جانبی کامپیوتر</p>
+                    <p>
+                        با پایبندی به سه اصل، رضایت مشتری، قیمت پایین کالا و تضمین اصل‌بودن کالا موفق شده تا همگام با
+                        فروشگاه‌های معتبر ایران، به یکی از فروشگاه اینترنتی ایران تبدیل شود.
+                    </p>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    @foreach (var license in licenses)
+                    {
+                        <div class="footer-img">
+                            @*<img class="im-footer" width="225" height="290" src="/images/site/default.png"
+                                 alt="فروشگاه لوازم جانبی">*@
+                            @Html.Raw(license.Content)
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 container div-copyright">
+                    تمامی
+                    حقوق مادی و معنوی این صفحه محفوظ می باشد.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/script.js"></script>
+    @RenderSection("script", false)
+</body>
+</html>
