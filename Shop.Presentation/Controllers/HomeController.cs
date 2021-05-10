@@ -118,9 +118,15 @@ namespace Shop.Presentation.Controllers
                 ViewBag.SendComment = false;
             }
 
+            string host = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
             var productName = (await _db.ProductRepository.GetAsync(id))?.Name;
             string title = Regex.Replace(Regex.Replace(productName.Replace(" ", "-").Trim().ToLower(), "[^\\w]", "-"), "[-]{2,}", "-");
-            return Redirect("/Product/" + id + "/" + title);
+            string path = "/Product/" + id + "/" + title;
+            path = String.Join(
+                "/",
+                path.Split("/").Select(s => System.Net.WebUtility.UrlEncode(s))
+            );
+            return Redirect(host + path);
         }
         #endregion
     }

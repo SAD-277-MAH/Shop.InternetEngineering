@@ -161,8 +161,9 @@ namespace Shop.Presentation.Areas.Panel.Controllers
                     return Redirect("/Panel/Order");
                 }
 
+                string host = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
                 var payment = new Payment(Convert.ToInt32(order.OrderSum - order.Discount + 20000));
-                var res = payment.PaymentRequest("پرداخت فاکتور فروشگاه اینترنتی", "https://localhost:44358/Panel/Order/OnlinePayment/" + order.Id, User.Identity.Name);
+                var res = payment.PaymentRequest("پرداخت فاکتور فروشگاه اینترنتی", host + "/Panel/Order/OnlinePayment/" + order.Id, User.Identity.Name);
 
                 if (res.Result.Status == 100)
                 {

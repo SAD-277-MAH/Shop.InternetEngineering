@@ -64,6 +64,7 @@ namespace Shop.Services.Seed.Service
                     PhotoUrl = "/images/site/default.png",
                     IsActive = true,
                     EmailConfirmed = true,
+                    RegisterDate = DateTime.Now
                 };
                 var adminResult = _userManager.CreateAsync(adminUser, "1234").Result;
                 if (adminResult.Succeeded)

@@ -131,7 +131,7 @@ namespace Shop.Presentation.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByNameAsync(UserName);
-                if (user.IsActive = Status)
+                if (user.IsActive == Status)
                 {
                     return Redirect("/Admin/UsersManagement/Details/" + user.Id);
                 }

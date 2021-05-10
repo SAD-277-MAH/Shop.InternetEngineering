@@ -91,6 +91,7 @@ namespace Shop.Services.Site.Service
                 Email = viewModel.Email,
                 PhotoUrl = "/images/site/default.png",
                 IsActive = false,
+                RegisterDate = DateTime.Now
             };
 
             var result = await _userManager.CreateAsync(user, viewModel.Password);
